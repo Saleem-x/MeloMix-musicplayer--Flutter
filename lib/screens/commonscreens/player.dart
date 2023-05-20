@@ -269,17 +269,21 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 //       fontSize: 17,
                                 //       fontWeight: FontWeight.bold),
                                 // ),
-                                SizedBox(
-                                  height: 20,
-                                  width: 200,
-                                  child: Marquee(
-                                    text: player.getCurrentAudioTitle,
-                                    blankSpace: 30,
-                                    style: GoogleFonts.play(
-                                      fontSize: 17,
-                                      color: Colors.white,
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                      width: 200,
+                                      child: Marquee(
+                                        text: player.getCurrentAudioTitle,
+                                        blankSpace: 30,
+                                        style: GoogleFonts.play(
+                                          fontSize: 17,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                                 Text(
                                   player.getCurrentAudioArtist,

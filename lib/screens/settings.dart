@@ -7,6 +7,7 @@ import 'package:music_player/screens/homescreen/homescreen.dart';
 import 'package:music_player/widgets/settingslist.dart';
 import '../materials/material.dart';
 import 'about/about .dart';
+import 'package:share_plus/share_plus.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -185,9 +186,16 @@ class _SettingsState extends State<Settings> {
                     icon: FontAwesomeIcons.circleInfo,
                   ),
                 ),
-                const SettingsList(
-                  title: 'Share',
-                  icon: FontAwesomeIcons.shareNodes,
+                InkWell(
+                  onTap: () async {
+                    Share.share(
+                        'check out my account https://www.instagram.com/salee.m._/',
+                        subject: 'Look what I made!');
+                  },
+                  child: const SettingsList(
+                    title: 'Share',
+                    icon: FontAwesomeIcons.shareNodes,
+                  ),
                 )
               ]),
             ),

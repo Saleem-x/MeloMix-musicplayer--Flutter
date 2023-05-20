@@ -281,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           child: const CardsList(
                               idx: 0,
-                              icon: Icons.album,
+                              icon: Icons.my_library_music_rounded,
                               ftitle: 'Albums',
                               stitle: 'You Have'),
                         ),

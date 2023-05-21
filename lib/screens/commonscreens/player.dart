@@ -32,11 +32,21 @@ class PlayerScreen extends StatefulWidget {
 
 // final AssetsAudioPlayer player = AssetsAudioPlayer.withId('0');
 
-class _PlayerScreenState extends State<PlayerScreen> {
+class _PlayerScreenState extends State<PlayerScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController? controller;
   @override
   void initState() {
+    controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
     setState(() {});
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller;
+    super.dispose();
   }
 
   @override

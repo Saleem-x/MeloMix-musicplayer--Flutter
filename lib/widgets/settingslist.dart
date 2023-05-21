@@ -11,7 +11,7 @@ class SettingsList extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     // final double width = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
       child: Container(
           height: height * 0.08,
           decoration: BoxDecoration(

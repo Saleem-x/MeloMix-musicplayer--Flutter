@@ -58,6 +58,7 @@ dependencies:
   restart_app: ^1.1.2
   share_plus: ^7.0.1
   shared_preferences: ^2.1.0
+  smooth_page_indicator: ^1.1.0
   video_player: ^2.4.7
   webview_flutter: ^4.2.0
 

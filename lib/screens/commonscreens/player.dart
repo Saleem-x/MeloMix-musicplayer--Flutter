@@ -35,10 +35,12 @@ class PlayerScreen extends StatefulWidget {
 class _PlayerScreenState extends State<PlayerScreen>
     with SingleTickerProviderStateMixin {
   AnimationController? controller;
+  // ValueNotifier<bool> isturning = ValueNotifier<bool>(true);
+  bool isturninig = false;
   @override
   void initState() {
     controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     setState(() {});
     super.initState();
   }
@@ -154,22 +156,35 @@ class _PlayerScreenState extends State<PlayerScreen>
                             height: 60,
                           ),
 
-                          CircleAvatar(
-                            backgroundColor: sendory,
-                            radius: 90,
-                            child: ClipOval(
-                              child: SizedBox.fromSize(
-                                size: const Size.fromRadius(90),
-                                child: QueryArtworkWidget(
-                                  id: int.parse(playing.audio.audio.metas.id!),
-                                  type: ArtworkType.AUDIO,
-                                  nullArtworkWidget: Image.asset(
-                                    'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png',
-                                    fit: BoxFit.cover,
+                          PlayerBuilder.isPlaying(
+                            player: player,
+                            builder: (context, isPlaying) {
+                              return RotationTransition(
+                                turns: isturninig
+                                    ? Tween(begin: 0.0, end: 0.0)
+                                        .animate(controller!.view)
+                                    : Tween(begin: 0.0, end: 1.0)
+                                        .animate(controller!.view),
+                                child: CircleAvatar(
+                                  backgroundColor: sendory,
+                                  radius: 90,
+                                  child: ClipOval(
+                                    child: SizedBox.fromSize(
+                                      size: const Size.fromRadius(90),
+                                      child: QueryArtworkWidget(
+                                        id: int.parse(
+                                            playing.audio.audio.metas.id!),
+                                        type: ArtworkType.AUDIO,
+                                        nullArtworkWidget: Image.asset(
+                                          'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
                           const SizedBox(
                             height: 100,
@@ -378,6 +393,18 @@ class _PlayerScreenState extends State<PlayerScreen>
                                     PlayerBuilder.isPlaying(
                                       player: player,
                                       builder: (context, isPlaying) {
+                                        if (isPlaying == true) {
+                                          log('playing');
+                                          // turning();
+                                          isturninig = true;
+                                          controller!.forward();
+                                          controller!.repeat();
+                                        } else {
+                                          // isturninig = false;
+                                          // notturning();
+                                          isturninig = false;
+                                          log('notplaying');
+                                        }
                                         return IconButton(
                                             onPressed: () async {
                                               isPlaying =
@@ -611,6 +638,18 @@ class _PlayerScreenState extends State<PlayerScreen>
       }
     }
   }
+
+  // turning() {
+  //   isturning.value = true;
+  //   controller!.forward();
+  //   controller!.repeat();
+  //   // setState(() {});
+  // }
+
+  // notturning() {
+  //   isturning.value = false;
+  //   // setState(() {});
+  // }
 }
 
 addfavs(Favsongs favson, BuildContext context) async {

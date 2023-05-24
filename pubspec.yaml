@@ -83,6 +83,10 @@ flutter:
     - assets/images/Retro_cassette_tape_vector-removebg-preview (2).png
     - assets/searchanim.json
     - assets/search-not-found.json
+    - assets/images/screen_1.png
+    - assets/images/screen_2.png
+    - assets/images/screen_3.png
+    - assets/images/screen_4.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

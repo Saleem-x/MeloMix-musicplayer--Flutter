@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:genius_lyrics/genius_lyrics.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,7 @@ import '../../materials/material.dart';
 import '../favorites/favoriteslist.dart';
 import '../homescreen/homescreen.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 
 import 'functions.dart';
 
@@ -186,98 +188,98 @@ class _PlayerScreenState extends State<PlayerScreen>
                               );
                             },
                           ),
-                          const SizedBox(
-                            height: 100,
+                          SizedBox(
+                            height: height * 0.14,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  tooltip: 'Lyrics',
-                                  onPressed: () async {
-                                    String title = player.getCurrentAudioTitle;
-                                    String artist =
-                                        player.getCurrentAudioArtist;
-                                    ScaffoldMessenger.of(context)
-                                      ..removeCurrentSnackBar()
-                                      ..showSnackBar(SnackBar(
-                                        backgroundColor: sendory,
-                                        content: Row(
-                                          children: [
-                                            Text(
-                                              'generating Lyrics please wait',
-                                              style: GoogleFonts.play(
-                                                  color: primary, fontSize: 17),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Icon(
-                                              Icons.info,
-                                              color: primary,
-                                            )
-                                          ],
-                                        ),
-                                      ));
-                                    String? lyric;
-                                    setState(() {});
-                                    Song? song = (await genius.searchSong(
-                                        artist: title, title: artist));
-                                    if (song != null) {
-                                      // print(song.lyrics);
-                                      log(song.lyrics.toString());
-                                      lyric = song.lyrics;
-                                    }
-                                    if (lyric != null) {
-                                      // ignore: use_build_context_synchronously
-                                      // await Navigator.push(context,
-                                      //     MaterialPageRoute(
-                                      //   builder: (context) {
-                                      //     return LyricsScreen(
-                                      //       artist: artist,
-                                      //       songname: title,
-                                      //       lyrics: lyric ??
-                                      //           'No Lyrics available for this song',
-                                      //     );
-                                      //   },
-                                      // ));
-                                      // ignore: use_build_context_synchronously
-                                      showlirics(context, lyric);
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                        ..removeCurrentSnackBar()
-                                        ..showSnackBar(SnackBar(
-                                          backgroundColor: sendory,
-                                          content: Row(
-                                            children: [
-                                              Text(
-                                                'Lyrics Not Available',
-                                                style: GoogleFonts.play(
-                                                    color: primary,
-                                                    fontSize: 17),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Icon(
-                                                Icons.info,
-                                                color: primary,
-                                              )
-                                            ],
-                                          ),
-                                        ));
-                                    }
-                                  },
-                                  icon: const Icon(
-                                    FontAwesomeIcons.chartBar,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(right: 20),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.end,
+                          //     children: [
+                          //       // IconButton(
+                          //       //   tooltip: 'Lyrics',
+                          //       //   onPressed: () async {
+                          //       //     String title = player.getCurrentAudioTitle;
+                          //       //     String artist =
+                          //       //         player.getCurrentAudioArtist;
+                          //       //     ScaffoldMessenger.of(context)
+                          //       //       ..removeCurrentSnackBar()
+                          //       //       ..showSnackBar(SnackBar(
+                          //       //         backgroundColor: sendory,
+                          //       //         content: Row(
+                          //       //           children: [
+                          //       //             Text(
+                          //       //               'generating Lyrics please wait',
+                          //       //               style: GoogleFonts.play(
+                          //       //                   color: primary, fontSize: 17),
+                          //       //             ),
+                          //       //             const SizedBox(
+                          //       //               width: 10,
+                          //       //             ),
+                          //       //             Icon(
+                          //       //               Icons.info,
+                          //       //               color: primary,
+                          //       //             )
+                          //       //           ],
+                          //       //         ),
+                          //       //       ));
+                          //       //     String? lyric;
+                          //       //     setState(() {});
+                          //       //     Song? song = (await genius.searchSong(
+                          //       //         artist: title, title: artist));
+                          //       //     if (song != null) {
+                          //       //       // print(song.lyrics);
+                          //       //       log(song.lyrics.toString());
+                          //       //       lyric = song.lyrics;
+                          //       //     }
+                          //       //     if (lyric != null) {
+                          //       //       // ignore: use_build_context_synchronously
+                          //       //       // await Navigator.push(context,
+                          //       //       //     MaterialPageRoute(
+                          //       //       //   builder: (context) {
+                          //       //       //     return LyricsScreen(
+                          //       //       //       artist: artist,
+                          //       //       //       songname: title,
+                          //       //       //       lyrics: lyric ??
+                          //       //       //           'No Lyrics available for this song',
+                          //       //       //     );
+                          //       //       //   },
+                          //       //       // ));
+                          //       //       // ignore: use_build_context_synchronously
+                          //       //       showlirics(context, lyric);
+                          //       //     } else {
+                          //       //       ScaffoldMessenger.of(context)
+                          //       //         ..removeCurrentSnackBar()
+                          //       //         ..showSnackBar(SnackBar(
+                          //       //           backgroundColor: sendory,
+                          //       //           content: Row(
+                          //       //             children: [
+                          //       //               Text(
+                          //       //                 'Lyrics Not Available',
+                          //       //                 style: GoogleFonts.play(
+                          //       //                     color: primary,
+                          //       //                     fontSize: 17),
+                          //       //               ),
+                          //       //               const SizedBox(
+                          //       //                 width: 10,
+                          //       //               ),
+                          //       //               Icon(
+                          //       //                 Icons.info,
+                          //       //                 color: primary,
+                          //       //               )
+                          //       //             ],
+                          //       //           ),
+                          //       //         ));
+                          //       //     }
+                          //       //   },
+                          //       //   icon: const Icon(
+                          //       //     FontAwesomeIcons.chartBar,
+                          //       //     color: Colors.white,
+                          //       //   ),
+                          //       // ),
+                          //     ],
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 80,
@@ -462,6 +464,30 @@ class _PlayerScreenState extends State<PlayerScreen>
                                       onPressed: () {
                                         player.toggleLoop();
                                         loop = loop == true ? false : true;
+                                        ScaffoldMessenger.of(context)
+                                          ..removeCurrentSnackBar()
+                                          ..showSnackBar(
+                                            SnackBar(
+                                              backgroundColor: sendory,
+                                              content: Row(
+                                                children: [
+                                                  Text(
+                                                    'Loop mode Changed',
+                                                    style: GoogleFonts.play(
+                                                        color: primary,
+                                                        fontSize: 17),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Icon(
+                                                    Icons.info,
+                                                    color: primary,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
                                       },
                                       icon: const Icon(
                                         FontAwesomeIcons.repeat,
@@ -470,6 +496,30 @@ class _PlayerScreenState extends State<PlayerScreen>
                                   IconButton(
                                     onPressed: () {
                                       player.toggleShuffle();
+                                      ScaffoldMessenger.of(context)
+                                        ..removeCurrentSnackBar()
+                                        ..showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: sendory,
+                                            content: Row(
+                                              children: [
+                                                Text(
+                                                  'Shuffle Enabled',
+                                                  style: GoogleFonts.play(
+                                                      color: primary,
+                                                      fontSize: 17),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Icon(
+                                                  Icons.info,
+                                                  color: primary,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
                                     },
                                     icon: const Icon(
                                       FontAwesomeIcons.shuffle,
@@ -611,13 +661,100 @@ class _PlayerScreenState extends State<PlayerScreen>
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 30,
+                          SizedBox(
+                            height: height * 0.05,
                           ),
                           // Padding(
                           //   padding: const EdgeInsets.only(left: 30, right: 30),
                           //   child:
                           // )
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async {
+                                String title = player.getCurrentAudioTitle;
+                                String artist = player.getCurrentAudioArtist;
+                                ScaffoldMessenger.of(context)
+                                  ..removeCurrentSnackBar()
+                                  ..showSnackBar(SnackBar(
+                                    backgroundColor: sendory,
+                                    content: Row(
+                                      children: [
+                                        Text(
+                                          'generating Lyrics please wait',
+                                          style: GoogleFonts.play(
+                                              color: primary, fontSize: 17),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Icon(
+                                          Icons.info,
+                                          color: primary,
+                                        )
+                                      ],
+                                    ),
+                                  ));
+                                String? lyric;
+                                setState(() {});
+                                Song? song = (await genius.searchSong(
+                                    artist: title, title: artist));
+                                if (song != null) {
+                                  // print(song.lyrics);
+                                  log(song.lyrics.toString());
+                                  lyric = song.lyrics;
+                                }
+                                if (lyric != null) {
+                                  // ignore: use_build_context_synchronously
+                                  // await Navigator.push(context,
+                                  //     MaterialPageRoute(
+                                  //   builder: (context) {
+                                  //     return LyricsScreen(
+                                  //       artist: artist,
+                                  //       songname: title,
+                                  //       lyrics: lyric ??
+                                  //           'No Lyrics available for this song',
+                                  //     );
+                                  //   },
+                                  // ));
+                                  // ignore: use_build_context_synchronously
+                                  showlirics(context, lyric);
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                    ..removeCurrentSnackBar()
+                                    ..showSnackBar(SnackBar(
+                                      backgroundColor: sendory,
+                                      content: Row(
+                                        children: [
+                                          Text(
+                                            'Lyrics Not Available',
+                                            style: GoogleFonts.play(
+                                                color: primary, fontSize: 17),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Icon(
+                                            Icons.info,
+                                            color: primary,
+                                          )
+                                        ],
+                                      ),
+                                    ));
+                                }
+                              },
+                              child: Container(
+                                // alignment: Alignment(0, 1),
+                                width: double.infinity,
+                                child: Column(children: [
+                                  const Icon(FontAwesomeIcons.caretUp),
+                                  Text(
+                                    'Lyrics',
+                                    style: GoogleFonts.play(fontSize: 15),
+                                  )
+                                ]),
+                              ),
+                            ),
+                          )
                         ]),
                       ),
                     ),

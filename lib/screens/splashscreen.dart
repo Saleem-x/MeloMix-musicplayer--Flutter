@@ -4,6 +4,7 @@ import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/mostplayedmodel/mostplayed.dart';
 import 'package:music_player/screens/getstarted.dart';
 import 'package:music_player/screens/homescreen/homescreen.dart';
+import 'package:music_player/screens/introscreen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../db/models/db_model.dart';
@@ -43,7 +44,7 @@ class _SplasScreenState extends State<SplasScreen> {
   Future<void> getStarted() async {
     // ignore: use_build_context_synchronously
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const GetStarted();
+      return const IntroScreen();
     }));
   }
 

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:music_player/screens/about/privacy.dart';
 import 'package:music_player/screens/homescreen/homescreen.dart';
+import 'package:music_player/screens/introscreen.dart';
 import 'package:music_player/widgets/settingslist.dart';
 import '../materials/material.dart';
 import 'about/about .dart';
@@ -141,18 +142,19 @@ class _SettingsState extends State<Settings> {
                                 onChanged: (value) {
                                   setState(() {
                                     dark = value;
-                                    themeswitcher(dark);
-                                    // Navigator.push(context, MaterialPageRoute(
-                                    //   builder: (context) {
-                                    //     return HomeScreen();
-                                    //   },
-                                    // ));
-                                    Navigator.pushReplacement(context,
+                                    themeswitcher(!dark);
+                                    Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                       builder: (context) {
                                         return HomeScreen();
                                       },
-                                    ));
+                                    ), (route) => false);
+                                    // Navigator.pushReplacement(context,
+                                    //     MaterialPageRoute(
+                                    //   builder: (context) {
+                                    //     return HomeScreen();
+                                    //   },
+                                    // ));
                                   });
                                 },
                               ),
@@ -165,7 +167,8 @@ class _SettingsState extends State<Settings> {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return const PrivacyPolicy();
+                        // return const PrivacyPolicy();
+                        return const IntroScreen();
                       },
                     ));
                   },

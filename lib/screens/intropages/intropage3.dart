@@ -32,7 +32,7 @@ class IntroPage3 extends StatelessWidget {
                 },
                 child: Text(
                   'Skip',
-                  style: TextStyle(color: primary, fontSize: 17),
+                  style: TextStyle(color: sendory, fontSize: 17),
                 )),
           ),
         ],

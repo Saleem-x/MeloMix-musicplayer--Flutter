@@ -4,10 +4,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../materials/material.dart';
 import '../homescreen/homescreen.dart';
 import '../splashscreen.dart';
+import 'package:slide_to_act/slide_to_act.dart';
 
-class IntroPagefinal extends StatelessWidget {
+class IntroPagefinal extends StatefulWidget {
   const IntroPagefinal({super.key});
 
+  @override
+  State<IntroPagefinal> createState() => _IntroPagefinalState();
+}
+
+class _IntroPagefinalState extends State<IntroPagefinal> {
+  String result = "Let's slide!";
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -21,16 +28,20 @@ class IntroPagefinal extends StatelessWidget {
           ),
           Positioned(
             bottom: 100,
-            left: size.width * 0.3,
-            right: size.width * 0.3,
-            child: TextButton(
-                onPressed: () {
-                  goTomain(context);
-                },
-                child: Text(
-                  'Get Started...',
-                  style: GoogleFonts.play(fontSize: 17, color: primary),
-                )),
+            left: 20,
+            right: 20,
+            child: SlideAction(
+              innerColor: sendory,
+              outerColor: primary,
+              text: 'Start Exploring',
+              textStyle: GoogleFonts.roboto(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold),
+              onSubmit: () {
+                goTomain(context);
+              },
+            ),
           )
         ],
       ),

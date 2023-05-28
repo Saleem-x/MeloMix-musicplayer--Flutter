@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/intropages/intropage1.dart';
 import 'package:music_player/screens/intropages/intropage2.dart';
 import 'package:music_player/screens/intropages/intropage4.dart';
 import 'package:music_player/screens/intropages/intropagefinal.dart';
-import 'package:music_player/screens/splashscreen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import 'homescreen/homescreen.dart';
 import 'intropages/intropage3.dart';
+
+PageController controller = PageController();
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -19,7 +16,6 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  PageController controller = PageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

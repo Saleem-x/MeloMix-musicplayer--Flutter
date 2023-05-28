@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/screens/introscreen.dart';
 
 import '../../materials/material.dart';
 import 'intropagefinal.dart';
@@ -32,7 +33,7 @@ class IntroPage4 extends StatelessWidget {
                 },
                 child: Text(
                   'Skip',
-                  style: TextStyle(color: primary, fontSize: 17),
+                  style: TextStyle(color: sendory, fontSize: 17),
                 )),
           ),
         ],

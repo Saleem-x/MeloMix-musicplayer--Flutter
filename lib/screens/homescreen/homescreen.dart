@@ -19,10 +19,6 @@ import '../allsongs/all_songs.dart';
 import '../miniplayer/miniplayer.dart';
 import 'package:page_transition/page_transition.dart';
 
-// import 'package:assets_audio_player/assets_audio_player.dart';
-// import 'package:flutter_audio_query/flutter_audio_query.dart';
-// import 'package:on_audio_query/on_audio_query.dart';
-
 AssetsAudioPlayer player = AssetsAudioPlayer();
 Songs? currentlyplaying;
 List<Audio> playinglistAudio = [];
@@ -39,11 +35,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-// use --> avatarglow
-
 class _HomeScreenState extends State<HomeScreen> {
   final audioquery = OnAudioQuery();
-  // var username = SharedPreferences.getInstance().toString();
   @override
   void initState() {
     for (var item in dbsongs) {
@@ -57,27 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  // addtorecent() {
-  //   Songs rsongs = currentlyplaying!;
-  //   if (recentList.contains(currentlyplaying)) {
-  //     recentList.add(rsongs);
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // bottomSheet: BottomSheet(
-      //   backgroundColor: Colors.transparent,
-      //   enableDrag: false,
-      //   onClosing: () {},
-      //   builder: (context) {
-      //     return miniplayer(context, player);
-      //   },
-      // ),
       backgroundColor: sendory,
       body: SafeArea(
         child: Stack(
@@ -90,20 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: ((context) {
-                        //       return const Settings();
-                        //     }),
-                        //   ),
-                        // );
-                        // Navigator.push(
-                        //     context,
-                        //     PageTransition(
-                        //         type: PageTransitionType.bottomToTopPop,
-                        //         child: const Settings(),
-                        //         childCurrent: HomeScreen()));
                         Navigator.push(
                             context,
                             PageTransition(

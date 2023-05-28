@@ -21,14 +21,6 @@ class PopUp2 extends StatefulWidget {
 class _PopUp2State extends State<PopUp2> {
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   widget.plsongs
-    //           .where((element) =>
-    //               element.songname == listall[widget.index].songname)
-    //           .isEmpty
-    //       ? add(widget.plsongs, widget.icon, widget.index)
-    //       : remove(widget.plsongs, widget.icon, widget.index);
-    // });
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -54,20 +46,10 @@ class _PopUp2State extends State<PopUp2> {
   }
 
   add(List<Songs> plsongs, icon, index) {
-    // plsongs.add(listall[index]);
     icon = Icons.add_circle;
   }
 
   remove(List<Songs> plsongs, icon, index) {
-    // plsongs.removeAt(index);
     icon = Icons.remove;
   }
 }
-//  plsongs.add(listall[index]);
-//      widget.plsongs
-//                     .where((element) =>
-//                         element.songname == listall[widget.index].songname)
-//                     .isEmpty
-//                 ? icon = Icons.add_circle
-//                 : icon = Icons.remove_circle;
-//             setState(() {});

@@ -5,31 +5,8 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../db/models/db_model.dart';
 import '../../materials/material.dart';
 
-// late List<Songs> searchdbSongs;
-// List<Songs> listall = List.from(searchdbSongs);
 final box = SongBox.getInstance();
 List<Songs> listall = box.values.toList();
-
-// class Searchlist extends StatefulWidget {
-//   final ValueNotifier data;
-//   final context;
-//   const Searchlist({super.key, required this.data, this.context});
-
-//   @override
-//   State<Searchlist> createState() => _SearchlistState();
-// }
-
-// class _SearchlistState extends State<Searchlist> {
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
 
 searchempty() {
   return ListView.separated(

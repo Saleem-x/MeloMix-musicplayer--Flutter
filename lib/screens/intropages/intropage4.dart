@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/screens/introscreen.dart';
 
 import '../../materials/material.dart';
 import 'intropagefinal.dart';
@@ -13,7 +12,7 @@ class IntroPage4 extends StatelessWidget {
       color: Colors.yellow,
       child: Stack(
         children: [
-          Container(
+          SizedBox(
             height: double.infinity,
             child: Image.asset(
               'assets/images/screen_4.png',

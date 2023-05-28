@@ -3,23 +3,6 @@ import 'package:music_player/db/models/mostplayedmodel/mostplayed.dart';
 
 import '../../db/functions/db_functions.dart';
 
-// addtolist() {
-//   for (MostPlayed song in allmpsongs) {
-//     if (song.count! >= 4) {
-//       bool isallready = tolist.where((element) => element == song).isEmpty;
-//       if (isallready == true) {
-//         // tolist.add(song);
-//         tolist.insert(0, song);
-//       } else {
-//         int index = tolist.indexWhere((element) => element == song);
-//         tolist.removeAt(index);
-//         // tolist.add(song);
-//         tolist.insert(index, song);
-//       }
-//     }
-//   }
-// }
-
 List<MostPlayed> addtolist() {
   List<MostPlayed> mostPlayedList = [];
   for (var item in mostplayedsongs.values) {

@@ -17,7 +17,6 @@ import '../../materials/material.dart';
 import '../favorites/favoriteslist.dart';
 import '../homescreen/homescreen.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:avatar_glow/avatar_glow.dart';
 
 import 'functions.dart';
 
@@ -32,12 +31,9 @@ class PlayerScreen extends StatefulWidget {
   State<PlayerScreen> createState() => _PlayerScreenState();
 }
 
-// final AssetsAudioPlayer player = AssetsAudioPlayer.withId('0');
-
 class _PlayerScreenState extends State<PlayerScreen>
     with SingleTickerProviderStateMixin {
   AnimationController? controller;
-  // ValueNotifier<bool> isturning = ValueNotifier<bool>(true);
   bool isturninig = false;
   @override
   void initState() {
@@ -59,7 +55,6 @@ class _PlayerScreenState extends State<PlayerScreen>
     final double width = MediaQuery.of(context).size.width;
     var loop = false;
 
-    // Color repeatcolor = sendory;
     Duration duration = Duration.zero;
     Duration position = Duration.zero;
     return SafeArea(
@@ -157,7 +152,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                           const SizedBox(
                             height: 60,
                           ),
-
                           PlayerBuilder.isPlaying(
                             player: player,
                             builder: (context, isPlaying) {
@@ -191,95 +185,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                           SizedBox(
                             height: height * 0.14,
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(right: 20),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.end,
-                          //     children: [
-                          //       // IconButton(
-                          //       //   tooltip: 'Lyrics',
-                          //       //   onPressed: () async {
-                          //       //     String title = player.getCurrentAudioTitle;
-                          //       //     String artist =
-                          //       //         player.getCurrentAudioArtist;
-                          //       //     ScaffoldMessenger.of(context)
-                          //       //       ..removeCurrentSnackBar()
-                          //       //       ..showSnackBar(SnackBar(
-                          //       //         backgroundColor: sendory,
-                          //       //         content: Row(
-                          //       //           children: [
-                          //       //             Text(
-                          //       //               'generating Lyrics please wait',
-                          //       //               style: GoogleFonts.play(
-                          //       //                   color: primary, fontSize: 17),
-                          //       //             ),
-                          //       //             const SizedBox(
-                          //       //               width: 10,
-                          //       //             ),
-                          //       //             Icon(
-                          //       //               Icons.info,
-                          //       //               color: primary,
-                          //       //             )
-                          //       //           ],
-                          //       //         ),
-                          //       //       ));
-                          //       //     String? lyric;
-                          //       //     setState(() {});
-                          //       //     Song? song = (await genius.searchSong(
-                          //       //         artist: title, title: artist));
-                          //       //     if (song != null) {
-                          //       //       // print(song.lyrics);
-                          //       //       log(song.lyrics.toString());
-                          //       //       lyric = song.lyrics;
-                          //       //     }
-                          //       //     if (lyric != null) {
-                          //       //       // ignore: use_build_context_synchronously
-                          //       //       // await Navigator.push(context,
-                          //       //       //     MaterialPageRoute(
-                          //       //       //   builder: (context) {
-                          //       //       //     return LyricsScreen(
-                          //       //       //       artist: artist,
-                          //       //       //       songname: title,
-                          //       //       //       lyrics: lyric ??
-                          //       //       //           'No Lyrics available for this song',
-                          //       //       //     );
-                          //       //       //   },
-                          //       //       // ));
-                          //       //       // ignore: use_build_context_synchronously
-                          //       //       showlirics(context, lyric);
-                          //       //     } else {
-                          //       //       ScaffoldMessenger.of(context)
-                          //       //         ..removeCurrentSnackBar()
-                          //       //         ..showSnackBar(SnackBar(
-                          //       //           backgroundColor: sendory,
-                          //       //           content: Row(
-                          //       //             children: [
-                          //       //               Text(
-                          //       //                 'Lyrics Not Available',
-                          //       //                 style: GoogleFonts.play(
-                          //       //                     color: primary,
-                          //       //                     fontSize: 17),
-                          //       //               ),
-                          //       //               const SizedBox(
-                          //       //                 width: 10,
-                          //       //               ),
-                          //       //               Icon(
-                          //       //                 Icons.info,
-                          //       //                 color: primary,
-                          //       //               )
-                          //       //             ],
-                          //       //           ),
-                          //       //         ));
-                          //       //     }
-                          //       //   },
-                          //       //   icon: const Icon(
-                          //       //     FontAwesomeIcons.chartBar,
-                          //       //     color: Colors.white,
-                          //       //   ),
-                          //       // ),
-                          //     ],
-                          //   ),
-                          // ),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 80,
@@ -288,14 +193,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Text(
-                                //   player.getCurrentAudioTitle,
-                                //   overflow: TextOverflow.ellipsis,
-                                //   style: const TextStyle(
-                                //       color: Colors.white,
-                                //       fontSize: 17,
-                                //       fontWeight: FontWeight.bold),
-                                // ),
                                 Row(
                                   children: [
                                     SizedBox(
@@ -364,13 +261,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        // int recIndex = listall.indexWhere(
-                                        //     (element) =>
-                                        //         element.id.toString() ==
-                                        //         player.id);
-                                        // final recValue =
-                                        //     addtorec(listall[recIndex - 1]);
-                                        // updaterecentlyplayed(recValue);
                                         player.previous();
                                         String tittle =
                                             player.getCurrentAudioTitle;
@@ -434,15 +324,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        // int recIndex = listall.indexWhere(
-                                        //     (element) =>
-                                        //         element.songname ==
-                                        //         player.getCurrentAudioTitle);
-
-                                        // log(listall[recIndex + 1].songname!);
-                                        // final recValue =
-                                        //     addtorec(listall[recIndex + 1]);
-                                        // updaterecentlyplayed(recValue);
                                         player.next();
                                         String tittle =
                                             player.getCurrentAudioTitle;
@@ -526,104 +407,11 @@ class _PlayerScreenState extends State<PlayerScreen>
                                       color: Colors.white,
                                     ),
                                   ),
-                                  // IconButton(
-                                  //   onPressed: () async {
-                                  //     await player
-                                  //         .seekBy(const Duration(seconds: -10));
-                                  //   },
-                                  //   icon: const Icon(
-                                  //     FontAwesomeIcons.arrowRotateLeft,
-                                  //     color: Colors.white,
-                                  //   ),
-                                  // ),
-                                  // IconButton(
-                                  //   onPressed: () async {
-                                  //     String title =
-                                  //         player.getCurrentAudioTitle;
-                                  //     String artist =
-                                  //         player.getCurrentAudioArtist;
-                                  //     ScaffoldMessenger.of(context)
-                                  //       ..removeCurrentSnackBar()
-                                  //       ..showSnackBar(SnackBar(
-                                  //         backgroundColor: sendory,
-                                  //         content: Row(
-                                  //           children: [
-                                  //             Text(
-                                  //               'generating Lyrics please wait',
-                                  //               style: GoogleFonts.play(
-                                  //                   color: primary,
-                                  //                   fontSize: 17),
-                                  //             ),
-                                  //             const SizedBox(
-                                  //               width: 10,
-                                  //             ),
-                                  //             Icon(
-                                  //               Icons.info,
-                                  //               color: primary,
-                                  //             )
-                                  //           ],
-                                  //         ),
-                                  //       ));
-                                  //     String? lyric;
-                                  //     setState(() {});
-                                  //     Song? song = (await genius.searchSong(
-                                  //         artist: title, title: artist));
-                                  //     if (song != null) {
-                                  //       // print(song.lyrics);
-                                  //       log(song.lyrics.toString());
-                                  //       lyric = song.lyrics;
-                                  //     }
-                                  //     if (lyric != null) {
-                                  //       // ignore: use_build_context_synchronously
-                                  //       // await Navigator.push(context,
-                                  //       //     MaterialPageRoute(
-                                  //       //   builder: (context) {
-                                  //       //     return LyricsScreen(
-                                  //       //       artist: artist,
-                                  //       //       songname: title,
-                                  //       //       lyrics: lyric ??
-                                  //       //           'No Lyrics available for this song',
-                                  //       //     );
-                                  //       //   },
-                                  //       // ));
-                                  //       // ignore: use_build_context_synchronously
-                                  //       showlirics(context, lyric);
-                                  //     } else {
-                                  //       ScaffoldMessenger.of(context)
-                                  //         ..removeCurrentSnackBar()
-                                  //         ..showSnackBar(SnackBar(
-                                  //           backgroundColor: sendory,
-                                  //           content: Row(
-                                  //             children: [
-                                  //               Text(
-                                  //                 'Lyrics Not Available',
-                                  //                 style: GoogleFonts.play(
-                                  //                     color: primary,
-                                  //                     fontSize: 17),
-                                  //               ),
-                                  //               const SizedBox(
-                                  //                 width: 10,
-                                  //               ),
-                                  //               Icon(
-                                  //                 Icons.info,
-                                  //                 color: primary,
-                                  //               )
-                                  //             ],
-                                  //           ),
-                                  //         ));
-                                  //     }
-                                  //   },
-                                  //   icon: const Icon(
-                                  //     FontAwesomeIcons.chartBar,
-                                  //     color: Colors.white,
-                                  //   ),
-                                  // ),
                                   IconButton(
                                     onPressed: () {
                                       String title =
                                           player.getCurrentAudioTitle;
                                       Songs fav = findcurrent(title);
-                                      log(fav.songname.toString());
                                       List<Favsongs> favlist =
                                           favsongbox.values.toList();
                                       favlist
@@ -664,10 +452,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                           SizedBox(
                             height: height * 0.05,
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 30, right: 30),
-                          //   child:
-                          // )
                           Expanded(
                             child: InkWell(
                               onTap: () async {
@@ -699,23 +483,9 @@ class _PlayerScreenState extends State<PlayerScreen>
                                 Song? song = (await genius.searchSong(
                                     artist: title, title: artist));
                                 if (song != null) {
-                                  // print(song.lyrics);
-                                  log(song.lyrics.toString());
                                   lyric = song.lyrics;
                                 }
                                 if (lyric != null) {
-                                  // ignore: use_build_context_synchronously
-                                  // await Navigator.push(context,
-                                  //     MaterialPageRoute(
-                                  //   builder: (context) {
-                                  //     return LyricsScreen(
-                                  //       artist: artist,
-                                  //       songname: title,
-                                  //       lyrics: lyric ??
-                                  //           'No Lyrics available for this song',
-                                  //     );
-                                  //   },
-                                  // ));
                                   // ignore: use_build_context_synchronously
                                   showlirics(context, lyric);
                                 } else {
@@ -742,8 +512,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                     ));
                                 }
                               },
-                              child: Container(
-                                // alignment: Alignment(0, 1),
+                              child: SizedBox(
                                 width: double.infinity,
                                 child: Column(children: [
                                   const Icon(FontAwesomeIcons.caretUp),
@@ -775,18 +544,6 @@ class _PlayerScreenState extends State<PlayerScreen>
       }
     }
   }
-
-  // turning() {
-  //   isturning.value = true;
-  //   controller!.forward();
-  //   controller!.repeat();
-  //   // setState(() {});
-  // }
-
-  // notturning() {
-  //   isturning.value = false;
-  //   // setState(() {});
-  // }
 }
 
 addfavs(Favsongs favson, BuildContext context) async {
@@ -842,39 +599,3 @@ deletefavs(Favsongs favson, BuildContext context, songlist) async {
       ),
     );
 }
-// if(Favoriteslist)
-// if (item.songname == title) {
-//         await favsongbox.add(Favsongs(
-//             songname: item.songname,
-//             artist: item.artist,
-//             duration: item.duration,
-//             songurl: item.songurl,
-//             id: item.id));
-//         favoritelistener.value.add(Favsongs(
-//             songname: item.songname,
-//             artist: item.artist,
-//             duration: item.duration,
-//             songurl: item.songurl,
-//             id: item.id));
-//         ScaffoldMessenger.of(context)
-//           ..removeCurrentSnackBar()
-//           ..showSnackBar(SnackBar(
-//             backgroundColor: sendory,
-//             content: Row(
-//               children: [
-//                 Text(
-//                   'Song Added to Favorites',
-//                   style: GoogleFonts.play(color: primary, fontSize: 17),
-//                 ),
-//                 const SizedBox(
-//                   width: 10,
-//                 ),
-//                 Icon(
-//                   Icons.info,
-//                   color: primary,
-//                 )
-//               ],
-//             ),
-//           ));
-//       }
-//     }

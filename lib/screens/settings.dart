@@ -2,13 +2,14 @@ import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:music_player/screens/about/privacy.dart';
 import 'package:music_player/screens/homescreen/homescreen.dart';
 import 'package:music_player/screens/introscreen.dart';
 import 'package:music_player/widgets/settingslist.dart';
 import '../materials/material.dart';
 import 'about/about .dart';
 import 'package:share_plus/share_plus.dart';
+
+import 'about/privacy.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -149,12 +150,6 @@ class _SettingsState extends State<Settings> {
                                         return HomeScreen();
                                       },
                                     ), (route) => false);
-                                    // Navigator.pushReplacement(context,
-                                    //     MaterialPageRoute(
-                                    //   builder: (context) {
-                                    //     return HomeScreen();
-                                    //   },
-                                    // ));
                                   });
                                 },
                               ),
@@ -167,8 +162,7 @@ class _SettingsState extends State<Settings> {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        // return const PrivacyPolicy();
-                        return const IntroScreen();
+                        return const PrivacyPolicy();
                       },
                     ));
                   },
@@ -193,7 +187,8 @@ class _SettingsState extends State<Settings> {
                   onTap: () async {
                     Share.share(
                         'check out my account https://www.instagram.com/salee.m._/',
-                        subject: 'Look what I made!');
+                        subject:
+                            'Enjoy the Real Taste of Offline Music With Melo Mix ');
                   },
                   child: const SettingsList(
                     title: 'Share',

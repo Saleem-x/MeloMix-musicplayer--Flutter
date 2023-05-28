@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,12 +35,6 @@ class MostlyPlayed extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  log(allmpsongs[1].count.toString());
-                  // allmpsongs.clear();
-                  // mostplayedsongs.clear();
-                  log(mostplayedsongs.length.toString());
-                  // mostplayedsongs.clear();
-
                   Navigator.of(context).pop();
                 },
                 icon: Icon(
@@ -110,7 +103,6 @@ class MostlyPlayed extends StatelessWidget {
                       child: ValueListenableBuilder(
                         valueListenable: mostplayedsongs.listenable(),
                         builder: (context, mostplayedsongs, child) {
-                          // allmpsongs = mostplayedsongs.values.toList();
                           tolist = addtolist();
                           if (tolist.isEmpty) {
                             return Center(

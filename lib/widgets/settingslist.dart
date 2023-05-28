@@ -9,7 +9,6 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    // final double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
       child: Container(
@@ -43,22 +42,3 @@ class SettingsList extends StatelessWidget {
     );
   }
 }
-// Card(
-//               shape: RoundedRectangleBorder(
-//                 borderRadius: BorderRadius.circular(30),
-//               ),
-//               color: sendory,
-//               child: Padding(
-//                 padding: const EdgeInsets.only(left: 10),
-//                 child: Row(
-//                   children: [
-//                     Icon(icon),
-//                     const SizedBox(
-//                       width: 20,
-//                     ),
-//                     Text(
-//                       title,
-//                     )
-//                   ],
-//                 ),
-//               )),

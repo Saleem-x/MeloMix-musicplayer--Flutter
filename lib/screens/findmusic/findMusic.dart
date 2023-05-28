@@ -98,13 +98,6 @@ class _FindMusicState extends State<FindMusic> {
               const SizedBox(
                 height: 30,
               ),
-              // const Text(
-              //   'Tap The Circle',
-              //   style: TextStyle(
-              //       color: Colors.white,
-              //       fontSize: 17,
-              //       fontWeight: FontWeight.bold),
-              // ),
               const SizedBox(
                 height: 60,
               ),

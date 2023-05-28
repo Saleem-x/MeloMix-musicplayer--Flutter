@@ -7,34 +7,6 @@ import '../../screens/homescreen/homescreen.dart';
 import '../models/recentmodel/recentmodel.dart';
 
 playAudio(List<Songs> songs, int index) async {
-  // print('1');
-  // currentlyplaying = songs[index];
-  // print('2');
-  // player.stop();
-  // print('3');
-  // for (int i = 0; i < songs.length; i++) {
-  //   print('4');
-  //   playinglistAudio.add(
-  //     Audio.file(
-  //       songs[i].songurl!,
-  //       metas: Metas(
-  //         title: songs[i].songname,
-  //         artist: songs[i].artist,
-  //         id: songs[i].id.toString(),
-  //       ),
-  //     ),
-  //   );
-  //   print('opened');
-  //   player.open(
-  //     Playlist(
-  //       audios: playinglistAudio,
-  //       startIndex: index,
-  //     ),
-  //     showNotification: true,
-  //     loopMode: LoopMode.playlist,
-  //     notificationSettings: const NotificationSettings(stopEnabled: false),
-  //   );
-  // }
   for (var item in songs) {
     playinglistAudio.add(Audio.file(item.songurl!,
         metas: Metas(

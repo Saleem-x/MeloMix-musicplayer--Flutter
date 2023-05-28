@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:music_player/materials/material.dart';
 
 showlirics(BuildContext context, String lyrics) {
-  // final double height = MediaQuery.of(context).size.height;
-  // final double width = MediaQuery.of(context).size.width;
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,

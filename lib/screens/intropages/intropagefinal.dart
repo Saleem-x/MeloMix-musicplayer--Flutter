@@ -17,7 +17,7 @@ class _IntroPagefinalState extends State<IntroPagefinal> {
   String result = "Let's slide!";
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     return Container(
       color: sendory,
       child: Stack(
@@ -49,8 +49,6 @@ class _IntroPagefinalState extends State<IntroPagefinal> {
   }
 
   Future<void> goTomain(BuildContext context) async {
-    final username = await SharedPreferences.getInstance();
-
     final sharedprefs = await SharedPreferences.getInstance();
     await sharedprefs.setBool(Save_Key, true);
     // ignore: use_build_context_synchronously

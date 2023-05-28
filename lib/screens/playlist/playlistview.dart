@@ -103,13 +103,6 @@ class _PlaylistsongviewState extends State<Playlistsongview> {
                             )
                           : ListView.separated(
                               itemBuilder: (context, index) {
-                                int? oid;
-                                for (int i = 0; i < listall.length; i++) {
-                                  if (listall[i].songname ==
-                                      widget.songtoplay[index].songname) {
-                                    oid = listall[i].id!;
-                                  }
-                                }
                                 return ListTile(
                                   onTap: () {
                                     playlistAudios(widget.songtoplay, index);
@@ -172,12 +165,6 @@ class _PlaylistsongviewState extends State<Playlistsongview> {
                                                         style: TextStyle(
                                                             color: sendory)),
                                                     onPressed: () {
-                                                      // var a = playlistbox.getAt(
-                                                      //     widget.plindex);
-                                                      // a!.playlistsongs!
-                                                      //     .removeAt(index);
-                                                      // playlistbox.put(
-                                                      //     widget.plindex, a);
                                                       deletesong(index,
                                                           widget.plindex);
                                                       setState(() {});
@@ -227,114 +214,3 @@ class _PlaylistsongviewState extends State<Playlistsongview> {
     );
   }
 }
-
-
-// Scaffold(
-//       backgroundColor: sendory,
-//       body: SafeArea(
-//         child: Column(
-//           children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 IconButton(
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   icon: Icon(
-//                     FontAwesomeIcons.chevronLeft,
-//                     color: primary,
-//                   ),
-//                 ),
-//                 Container(
-//                   decoration: BoxDecoration(
-//                     color: primary,
-//                     borderRadius: const BorderRadius.only(
-//                       topLeft: Radius.circular(30),
-//                       bottomLeft: Radius.circular(30),
-//                     ),
-//                   ),
-//                   height: height * 0.05,
-//                   width: width * 0.8,
-//                   alignment: Alignment.centerLeft,
-//                   child: Padding(
-//                     padding: const EdgeInsets.only(left: 20),
-//                     child: Text(
-//                       playlistname,
-//                       style: TextStyle(
-//                           color: sendory,
-//                           fontSize: 17,
-//                           fontWeight: FontWeight.bold),
-//                     ),
-//                   ),
-//                 )
-//               ],
-//             ),
-//             const SizedBox(
-//               height: 30,
-//             ),
-//             Expanded(
-//               child: Stack(
-//                 children: [
-//                   Container(
-//                     height: double.infinity,
-//                     decoration: BoxDecoration(
-//                       color: primary,
-//                       borderRadius: const BorderRadius.only(
-//                         topLeft: Radius.circular(60),
-//                       ),
-//                     ),
-//                     child: Padding(
-//                         padding: EdgeInsets.only(top: 25),
-//                         child: ListView.separated(
-//                             itemBuilder: (context, index) {
-//                               return ListTile(
-//                                 onTap: () {},
-//                                 title: Text(
-//                                   song[index].songname!,
-//                                   style: const TextStyle(color: Colors.white),
-//                                 ),
-//                                 subtitle: Text(
-//                                   song[index].artist!,
-//                                   style: const TextStyle(color: Colors.white),
-//                                 ),
-//                                 leading: CircleAvatar(backgroundColor: sendory),
-//                                 trailing: Row(
-//                                   mainAxisSize: MainAxisSize.min,
-//                                   children: [
-//                                     IconButton(
-//                                       onPressed: () {},
-//                                       icon: const Icon(
-//                                         FontAwesomeIcons.ellipsisVertical,
-//                                         color: Colors.white,
-//                                       ),
-//                                     ),
-//                                   ],
-//                                 ),
-//                               );
-//                             },
-//                             separatorBuilder: (context, index) {
-//                               return Divider(
-//                                 thickness: 1,
-//                                 color: sendory,
-//                                 endIndent: 20,
-//                                 indent: 20,
-//                                 height: 0,
-//                               );
-//                             },
-//                             itemCount: song.length)),
-//                   ),
-//                   const Padding(
-//                     padding: EdgeInsets.all(10),
-//                     child: Align(
-//                       alignment: Alignment.bottomCenter,
-//                       child: MiniPlayer(),
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );

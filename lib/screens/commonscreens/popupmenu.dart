@@ -178,17 +178,6 @@ class _PopupmenuState extends State<Popupmenu> {
                                           itemBuilder: (context, index) {
                                             return InkWell(
                                               onTap: () {
-                                                // Playlistsongs? plsongs =
-                                                //     playlistbox.getAt(index);
-                                                // List<Songs>? plnewsongs =
-                                                //     plsongs!.playlistsongs;
-
-                                                // playlistadd(
-                                                //     plnewsongs!,
-                                                //     widget.songs,
-                                                //     index,
-                                                //     widget.index,
-                                                //     context);
                                                 var a =
                                                     playlistbox.values.toList();
 
@@ -201,10 +190,7 @@ class _PopupmenuState extends State<Popupmenu> {
                                                     contains = true;
                                                   }
                                                 }
-                                                // a[index]
-                                                //     .playlistsongs!
-                                                //     .contains(widget
-                                                //         .songs[widget.index])
+
                                                 if (contains == true) {
                                                   ScaffoldMessenger.of(context)
                                                     ..removeCurrentSnackBar()
@@ -235,7 +221,6 @@ class _PopupmenuState extends State<Popupmenu> {
                                                       ),
                                                     );
                                                   Navigator.pop(context);
-                                                  log('allready');
                                                 } else if (contains == false) {
                                                   var a =
                                                       playlistbox.getAt(index);
@@ -271,7 +256,6 @@ class _PopupmenuState extends State<Popupmenu> {
                                                       ),
                                                     );
                                                   Navigator.pop(context);
-                                                  log('added');
                                                 }
                                               },
                                               child: CardsList(
@@ -299,7 +283,6 @@ class _PopupmenuState extends State<Popupmenu> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           itemBuilder: (context) => [
-            // const PopupMenuItem(value: 1, child: Text('Add to favorites')),
             PopupMenuItem(
                 value: 0,
                 child: Text(
@@ -329,12 +312,6 @@ class _PopupmenuState extends State<Popupmenu> {
       }
     }
     if (contains == false) {
-      // plnewsongs.add(Songs(
-      //     songname: songs[index].songname,
-      //     artist: songs[index].artist,
-      //     duration: songs[index].duration,
-      //     id: songs[index].duration,
-      //     songurl: songs[index].songurl));
       var a = playlistbox.getAt(plidex);
       a!.playlistsongs!.add(Songs(
           songname: songs[index].songname,
@@ -448,73 +425,3 @@ class _PopupmenuState extends State<Popupmenu> {
       );
   }
 }
-
-
-
-
-
-
-
-//  if (idx != null) {
-//               // removefav(listall[widget.index]);
-
-//               var k = favsongbox.values.where((element) => element == favson);
-              // favsongbox.delete(favson);
-              // ScaffoldMessenger.of(context)
-              //   ..removeCurrentSnackBar()
-              //   ..showSnackBar(
-              //     SnackBar(
-              //       backgroundColor: sendory,
-              //       content: Row(
-              //         children: [
-              //           Text(
-              //             'Song Removed from Favorites',
-              //             style: TextStyle(
-              //                 color: primary,
-              //                 fontSize: 17,
-              //                 fontWeight: FontWeight.bold),
-              //           ),
-              //           const SizedBox(
-              //             width: 10,
-              //           ),
-              //           Icon(
-              //             Icons.info,
-              //             color: primary,
-              //           )
-              //         ],
-              //       ),
-              //     ),
-              //   );
-//             } else {
-//               // addtofav(listall[widget.index]);
-//               // favoritelistener.value.add(listall[widget.index]);
-//               // int currentindex = checkit.indexWhere(
-//               //     (element) => element.id == listall[widget.index].id);
-              // favsongbox.add(favson);
-              // widget.favicon = Icons.favorite;
-              // ScaffoldMessenger.of(context)
-              //   ..removeCurrentSnackBar()
-              //   ..showSnackBar(
-              //     SnackBar(
-              //       backgroundColor: sendory,
-              //       content: Row(
-              //         children: [
-              //           Text(
-              //             'Song Added to Favorites',
-              //             style: TextStyle(
-              //                 color: primary,
-              //                 fontSize: 17,
-              //                 fontWeight: FontWeight.bold),
-              //           ),
-              //           const SizedBox(
-              //             width: 10,
-              //           ),
-              //           Icon(
-              //             Icons.info,
-              //             color: primary,
-              //           )
-              //         ],
-              //       ),
-              //     ),
-              //   );
-            // }

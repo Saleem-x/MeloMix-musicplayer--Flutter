@@ -38,9 +38,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
           setState(() {});
         },
         onTap: () {
-          // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //   return const PlayerScreen();
-          // }));
           Navigator.push(
             context,
             PageTransition(
@@ -102,21 +99,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
-                                          // title: Text(
-                                          //   player.getCurrentAudioTitle,
-                                          //   style: TextStyle(
-                                          //       color: primary,
-                                          //       fontSize: 17,
-                                          //       fontWeight: FontWeight.bold),
-                                          //   overflow: TextOverflow.ellipsis,
-                                          // ),
-                                          // subtitle: Text(
-                                          //   player.getCurrentAudioArtist,
-                                          //   style: TextStyle(
-                                          //     color: primary,
-                                          //   ),
-                                          //   overflow: TextOverflow.ellipsis,
-                                          // ),
                                           leading: CircleAvatar(
                                             radius: 17,
                                             backgroundColor: primary,
@@ -240,134 +222,3 @@ find(String title) {
     }
   }
 }
-
-
-// floating() {
-//   FloatingActionButton(
-//     onPressed: () {},
-//     child: Icon(Icons.add),
-//   );
-// }
-
-
-// void showBottomSheet(BuildContext context) {
-//   showModalBottomSheet(
-//     context: context,
-//     backgroundColor: Colors.transparent,
-//     builder: (BuildContext context) {
-//       return Container(
-//         height: 200,
-//         child: Center(
-//           child: MiniPlayer(),
-//         ),
-//       );
-//     },
-//   );
-// }
-// Container(
-//         decoration: BoxDecoration(
-//             color: sendory,
-//             borderRadius: const BorderRadius.all(Radius.circular(30))),
-//         height: 100,
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             player.builderCurrent(
-//               builder: (context, playing) {
-//                 return Row(
-//                   children: [
-//                     Expanded(
-//                       child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           children: [
-//                             Container(
-//                               height: 7,
-//                               width: 20,
-//                               decoration: BoxDecoration(
-//                                   color: primary,
-//                                   borderRadius: const BorderRadius.all(
-//                                       Radius.circular(30))),
-//                             ),
-//                             ListTile(
-//                               title: Text(
-//                                 player.getCurrentAudioTitle,
-//                                 style: TextStyle(
-//                                     color: primary,
-//                                     fontSize: 17,
-//                                     fontWeight: FontWeight.bold),
-//                                 overflow: TextOverflow.ellipsis,
-//                               ),
-//                               subtitle: Text(
-//                                 player.getCurrentAudioArtist,
-//                                 style: TextStyle(
-//                                   color: primary,
-//                                 ),
-//                                 overflow: TextOverflow.ellipsis,
-//                               ),
-//                               leading: CircleAvatar(
-//                                 radius: 30,
-//                                 backgroundColor: primary,
-//                                 child: ClipOval(
-//                                   child: QueryArtworkWidget(
-//                                     id: int.parse(
-//                                         playing.audio.audio.metas.id!),
-//                                     type: ArtworkType.AUDIO,
-//                                     nullArtworkWidget: Image.asset(
-//                                         'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
-//                                   ),
-//                                 ),
-//                               ),
-//                               trailing: Row(
-//                                   mainAxisSize: MainAxisSize.min,
-//                                   children: [
-//                                     PlayerBuilder.isPlaying(
-//                                         player: player,
-//                                         builder: (context, isPlaying) {
-//                                           return Row(
-//                                             children: [
-//                                               IconButton(
-//                                                 onPressed: () {
-//                                                   player.previous();
-//                                                 },
-//                                                 icon: Icon(
-//                                                   FontAwesomeIcons.backward,
-//                                                   color: primary,
-//                                                 ),
-//                                               ),
-//                                               IconButton(
-//                                                   onPressed: () async {
-//                                                     isPlaying =
-//                                                         isPlaying = !isPlaying;
-//                                                     await player.playOrPause();
-//                                                   },
-//                                                   icon: Icon(
-//                                                     isPlaying
-//                                                         ? FontAwesomeIcons
-//                                                             .circlePause
-//                                                         : FontAwesomeIcons
-//                                                             .circlePlay,
-//                                                     color: primary,
-//                                                     size: 30,
-//                                                   )),
-//                                               IconButton(
-//                                                 onPressed: () {
-//                                                   player.next();
-//                                                 },
-//                                                 icon: Icon(
-//                                                   FontAwesomeIcons.forward,
-//                                                   color: primary,
-//                                                 ),
-//                                               ),
-//                                             ],
-//                                           );
-//                                         }),
-//                                   ]),
-//                             )
-//                           ]),
-//                     ),
-//                   ],
-//                 );
-//               },
-//             )
-//           ],
-//         ),

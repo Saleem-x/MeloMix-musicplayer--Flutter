@@ -56,12 +56,10 @@ class _AllSongsListState extends State<AllSongsList> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    // final double width = MediaQuery.of(context).size.width;
     return ValueListenableBuilder<Box<Songs>>(
       valueListenable: box.listenable(),
       builder: (context, Box<Songs> allsongbox, child) {
         List<Songs> allDbSongs = allsongbox.values.toList();
-        // List<MostPlayed> mostplayed = mostplayedsongs.values.toList();
         return allDbSongs.isEmpty
             ? songlistempty()
             : Stack(
@@ -74,16 +72,12 @@ class _AllSongsListState extends State<AllSongsList> {
                             itemBuilder: (context, index) {
                               Songs songs = allDbSongs[index];
                               MostPlayed mpsong = allmpsongs[index];
-                              // MostPlayed mpsongs = [index];
                               IconData favicon = Icons.favorite_border;
                               return ListTile(
                                 onTap: () {
                                   currentlyplaying = songs;
                                   playAudio(allDbSongs, index);
-                                  RecentlyPlayed rsongs;
-                                  rsongs = addtorec(songs);
                                   updatempcount(mpsong, index);
-                                  // log(songs.id.toString());
                                 },
                                 title: Text(
                                   songs.songname!,
@@ -136,26 +130,6 @@ class _AllSongsListState extends State<AllSongsList> {
                       ),
                     ],
                   ),
-                  // currentlyplaying != null
-                  //     ? const Padding(
-                  //         padding:
-                  //             EdgeInsets.only(bottom: 10, right: 10, left: 10),
-                  //         child: Align(
-                  //           alignment: Alignment.bottomRight,
-                  //           child: SizedBox(
-                  //             height: 100,
-                  //             width: double.infinity,
-                  //             child: MiniPlayer(),
-                  //           ),
-                  //         ),
-                  //       )
-                  //     : const Padding(
-                  //         padding: EdgeInsetsDirectional.all(10),
-                  //         child: Align(
-                  //           alignment: Alignment.bottomCenter,
-                  //           child: MiniPlayerNull(),
-                  //         ),
-                  //       )
                 ],
               );
       },

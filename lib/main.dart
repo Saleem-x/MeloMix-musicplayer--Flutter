@@ -6,7 +6,6 @@ import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/db/models/favoritesmodel/favoritesmodel.dart';
 import 'package:music_player/db/models/playlismodel/playlistmodel.dart';
 import 'package:music_player/db/models/recentmodel/recentmodel.dart';
-// import 'package:music_player/screens/homescreen.dart';
 import 'package:music_player/screens/splashscreen.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'db/models/mostplayedmodel/mostplayed.dart';
@@ -47,7 +46,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Color pr = Colors.deepPurple.shade400;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),

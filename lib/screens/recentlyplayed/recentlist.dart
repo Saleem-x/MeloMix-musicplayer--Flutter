@@ -23,11 +23,9 @@ class RecentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    // final double width = MediaQuery.of(context).size.width;
     return ValueListenableBuilder(
       valueListenable: recentlyplayedbox.listenable(),
       builder: (context, recentsongs, child) {
-        // print('hhhhh');
         List<RecentlyPlayed> rsongs =
             recentsongs.values.toList().reversed.toList();
         List<Songs> topopup = [];
@@ -42,7 +40,6 @@ class RecentList extends StatelessWidget {
         return rsongs.isEmpty
             ? recentempty()
             : ListView.separated(
-                // physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (
                   context,
                   index,

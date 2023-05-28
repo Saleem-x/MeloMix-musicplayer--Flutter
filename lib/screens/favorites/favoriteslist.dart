@@ -10,7 +10,6 @@ import 'package:music_player/screens/homescreen/homescreen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../materials/material.dart';
 
-// List<Favsongs> fvs = favsongbox.values.toList();
 ValueNotifier<List<Favsongs>> favoritelistener =
     ValueNotifier(favsongbox.values.toList());
 
@@ -37,7 +36,6 @@ class _FavoriteslistState extends State<Favoriteslist> {
 
   @override
   Widget build(BuildContext context) {
-    // final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return ValueListenableBuilder<Box<Favsongs>>(
       valueListenable: favsongbox.listenable(),
@@ -62,13 +60,6 @@ class _FavoriteslistState extends State<Favoriteslist> {
         }
         return ListView.separated(
             itemBuilder: (context, index) {
-              // IconData favicon = Icons.favorite_border;
-              // Favsongs song = Favsongs(
-              //     songname: favsongs[index].songname,
-              //     artist: favsongs[index].artist,
-              //     duration: favsongs[index].duration,
-              //     songurl: favsongs[index].songurl,
-              //     id: favsongs[index].id);
               return ListTile(
                   onTap: () {
                     playfavAudios(allsongs, index);

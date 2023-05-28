@@ -12,7 +12,7 @@ class IntroPage1 extends StatelessWidget {
       color: primary,
       child: Stack(
         children: [
-          Container(
+          SizedBox(
             height: double.infinity,
             child: Image.asset(
               'assets/images/screen_1.png',

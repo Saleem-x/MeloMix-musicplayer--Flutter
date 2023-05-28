@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/albums/listalbum.dart';
 import 'package:music_player/screens/miniplayer/miniplayer.dart';
-import 'package:music_player/screens/searchscreen/searchwidget.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class AlbumScreen extends StatefulWidget {

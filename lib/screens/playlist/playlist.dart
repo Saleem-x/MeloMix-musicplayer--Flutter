@@ -8,10 +8,7 @@ import 'package:music_player/db/models/playlismodel/playlistmodel.dart';
 import 'package:music_player/screens/miniplayer/miniplayer.dart';
 import 'package:music_player/screens/playlist/createpalylist.dart';
 import 'package:music_player/screens/playlist/playlistview.dart';
-import 'package:music_player/screens/searchscreen/searchwidget.dart';
 import 'package:music_player/widgets/cardsmain.dart';
-import 'package:on_audio_query/on_audio_query.dart';
-import '../../db/models/db_model.dart';
 import '../../materials/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -132,7 +129,7 @@ class _PlayListState extends State<PlayList> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Lottie.asset('assets/search-not-found.json'),
+                                  Lottie.asset('assets/common-empty.json'),
                                   Text(
                                     'No Playlist available',
                                     style: GoogleFonts.play(

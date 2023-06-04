@@ -8,7 +8,6 @@ import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/miniplayer/miniplayer.dart';
 import 'package:music_player/screens/playlist/functions.dart';
-import 'package:music_player/screens/searchscreen/searchwidget.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 // ignore: must_be_immutable
@@ -93,7 +92,7 @@ class _PlaylistsongviewState extends State<Playlistsongview> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Lottie.asset('assets/search-not-found.json'),
+                                  Lottie.asset('assets/common-empty.json'),
                                   const Text(
                                     'No Songs Added',
                                     style: TextStyle(color: Colors.white),

@@ -123,7 +123,7 @@ recentempty() {
         SizedBox(
           height: 250,
           width: 100,
-          child: Lottie.asset('assets/search-not-found.json'),
+          child: Lottie.asset('assets/recent-empty.json'),
         ),
         Center(
           child: Text(

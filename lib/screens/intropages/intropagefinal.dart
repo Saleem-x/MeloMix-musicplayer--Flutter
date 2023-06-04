@@ -33,7 +33,7 @@ class _IntroPagefinalState extends State<IntroPagefinal> {
             child: SlideAction(
               innerColor: sendory,
               outerColor: primary,
-              text: 'Start Exploring',
+              text: 'Swipe to Enter',
               textStyle: GoogleFonts.roboto(
                   color: Colors.white,
                   fontSize: 17,
@@ -52,8 +52,14 @@ class _IntroPagefinalState extends State<IntroPagefinal> {
     final sharedprefs = await SharedPreferences.getInstance();
     await sharedprefs.setBool(Save_Key, true);
     // ignore: use_build_context_synchronously
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return HomeScreen();
-    }));
+    // Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //   return HomeScreen();
+    // }));
+    // ignore: use_build_context_synchronously
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+      builder: (context) {
+        return HomeScreen();
+      },
+    ), (route) => false);
   }
 }

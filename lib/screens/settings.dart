@@ -3,7 +3,6 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:music_player/screens/homescreen/homescreen.dart';
-import 'package:music_player/screens/introscreen.dart';
 import 'package:music_player/widgets/settingslist.dart';
 import '../materials/material.dart';
 import 'about/about .dart';
@@ -186,7 +185,7 @@ class _SettingsState extends State<Settings> {
                 InkWell(
                   onTap: () async {
                     Share.share(
-                        'check out my account https://www.instagram.com/salee.m._/',
+                        'Checkout Melo Mix offline Music Player https://play.google.com/store/apps/details?id=in.brototype.melo_mix',
                         subject:
                             'Enjoy the Real Taste of Offline Music With Melo Mix ');
                   },

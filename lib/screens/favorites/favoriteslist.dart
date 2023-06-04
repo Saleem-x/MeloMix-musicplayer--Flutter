@@ -46,7 +46,7 @@ class _FavoriteslistState extends State<Favoriteslist> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Lottie.asset('assets/search-not-found.json'),
+                Lottie.asset('assets/common-empty.json'),
                 Text(
                   'No Favorite Songs available',
                   style: TextStyle(

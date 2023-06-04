@@ -152,35 +152,116 @@ class _PlayerScreenState extends State<PlayerScreen>
                           const SizedBox(
                             height: 60,
                           ),
-                          PlayerBuilder.isPlaying(
-                            player: player,
-                            builder: (context, isPlaying) {
-                              return RotationTransition(
-                                turns: isturninig
-                                    ? Tween(begin: 0.0, end: 0.0)
-                                        .animate(controller!.view)
-                                    : Tween(begin: 0.0, end: 1.0)
-                                        .animate(controller!.view),
-                                child: CircleAvatar(
-                                  backgroundColor: sendory,
-                                  radius: 90,
-                                  child: ClipOval(
-                                    child: SizedBox.fromSize(
-                                      size: const Size.fromRadius(90),
-                                      child: QueryArtworkWidget(
-                                        id: int.parse(
-                                            playing.audio.audio.metas.id!),
-                                        type: ArtworkType.AUDIO,
-                                        nullArtworkWidget: Image.asset(
-                                          'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png',
-                                          fit: BoxFit.cover,
+                          SizedBox(
+                            width: double.infinity,
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: PlayerBuilder.isPlaying(
+                                    player: player,
+                                    builder: (context, isPlaying) {
+                                      return RotationTransition(
+                                        turns: isturninig
+                                            ? Tween(begin: 0.0, end: 0.0)
+                                                .animate(controller!.view)
+                                            : Tween(begin: 0.0, end: 1.0)
+                                                .animate(controller!.view),
+                                        child: CircleAvatar(
+                                          backgroundColor: sendory,
+                                          radius: 90,
+                                          child: ClipOval(
+                                            child: SizedBox.fromSize(
+                                              size: const Size.fromRadius(90),
+                                              child: QueryArtworkWidget(
+                                                id: int.parse(playing
+                                                    .audio.audio.metas.id!),
+                                                type: ArtworkType.AUDIO,
+                                                nullArtworkWidget: Image.asset(
+                                                  'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png',
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
+                                      );
+                                    },
                                   ),
                                 ),
-                              );
-                            },
+                                Positioned(
+                                  right: 30,
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.lyrics,
+                                      size: 40,
+                                    ),
+                                    onPressed: () async {
+                                      String title =
+                                          player.getCurrentAudioTitle;
+                                      String artist =
+                                          player.getCurrentAudioArtist;
+                                      ScaffoldMessenger.of(context)
+                                        ..removeCurrentSnackBar()
+                                        ..showSnackBar(SnackBar(
+                                          backgroundColor: sendory,
+                                          content: Row(
+                                            children: [
+                                              Text(
+                                                'generating Lyrics please wait',
+                                                style: GoogleFonts.play(
+                                                    color: primary,
+                                                    fontSize: 17),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Icon(
+                                                Icons.info,
+                                                color: primary,
+                                              )
+                                            ],
+                                          ),
+                                        ));
+                                      String? lyric;
+                                      setState(() {});
+                                      Song? song = (await genius.searchSong(
+                                          artist: title, title: artist));
+                                      if (song != null) {
+                                        lyric = song.lyrics;
+                                      }
+                                      if (lyric != null) {
+                                        // ignore: use_build_context_synchronously
+                                        showlirics(context, lyric);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                          ..removeCurrentSnackBar()
+                                          ..showSnackBar(SnackBar(
+                                            backgroundColor: sendory,
+                                            content: Row(
+                                              children: [
+                                                Text(
+                                                  'Lyrics Not Available',
+                                                  style: GoogleFonts.play(
+                                                      color: primary,
+                                                      fontSize: 17),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Icon(
+                                                  Icons.info,
+                                                  color: primary,
+                                                )
+                                              ],
+                                            ),
+                                          ));
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: height * 0.14,
@@ -286,16 +367,11 @@ class _PlayerScreenState extends State<PlayerScreen>
                                       player: player,
                                       builder: (context, isPlaying) {
                                         if (isPlaying == true) {
-                                          log('playing');
-                                          // turning();
                                           isturninig = true;
                                           controller!.forward();
                                           controller!.repeat();
                                         } else {
-                                          // isturninig = false;
-                                          // notturning();
                                           isturninig = false;
-                                          log('notplaying');
                                         }
                                         return IconButton(
                                             onPressed: () async {
@@ -449,81 +525,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: height * 0.05,
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () async {
-                                String title = player.getCurrentAudioTitle;
-                                String artist = player.getCurrentAudioArtist;
-                                ScaffoldMessenger.of(context)
-                                  ..removeCurrentSnackBar()
-                                  ..showSnackBar(SnackBar(
-                                    backgroundColor: sendory,
-                                    content: Row(
-                                      children: [
-                                        Text(
-                                          'generating Lyrics please wait',
-                                          style: GoogleFonts.play(
-                                              color: primary, fontSize: 17),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Icon(
-                                          Icons.info,
-                                          color: primary,
-                                        )
-                                      ],
-                                    ),
-                                  ));
-                                String? lyric;
-                                setState(() {});
-                                Song? song = (await genius.searchSong(
-                                    artist: title, title: artist));
-                                if (song != null) {
-                                  lyric = song.lyrics;
-                                }
-                                if (lyric != null) {
-                                  // ignore: use_build_context_synchronously
-                                  showlirics(context, lyric);
-                                } else {
-                                  ScaffoldMessenger.of(context)
-                                    ..removeCurrentSnackBar()
-                                    ..showSnackBar(SnackBar(
-                                      backgroundColor: sendory,
-                                      content: Row(
-                                        children: [
-                                          Text(
-                                            'Lyrics Not Available',
-                                            style: GoogleFonts.play(
-                                                color: primary, fontSize: 17),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Icon(
-                                            Icons.info,
-                                            color: primary,
-                                          )
-                                        ],
-                                      ),
-                                    ));
-                                }
-                              },
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Column(children: [
-                                  const Icon(FontAwesomeIcons.caretUp),
-                                  Text(
-                                    'Lyrics',
-                                    style: GoogleFonts.play(fontSize: 15),
-                                  )
-                                ]),
-                              ),
-                            ),
-                          )
                         ]),
                       ),
                     ),

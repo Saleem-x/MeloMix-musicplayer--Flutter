@@ -56,7 +56,6 @@ updatempcount(MostPlayed data, int index) async {
 
 renameplaylist(int index, String newname) {
   var playlists = playlistbox.values.toList();
-  String currentname = playlists[index].playlistname;
   playlists[index].playlistname = newname;
   playlistbox.put(index, playlists[index]);
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_player/bloc/playlist/playlist_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/playlismodel/playlistmodel.dart';
 import 'package:music_player/screens/miniplayer/miniplayer.dart';
@@ -12,17 +13,9 @@ import 'package:music_player/widgets/cardsmain.dart';
 import '../../materials/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// ignore: must_be_immutable
-class PlayList extends StatefulWidget {
-  const PlayList({
-    super.key,
-  });
+class PlayList extends StatelessWidget {
+  const PlayList({super.key});
 
-  @override
-  State<PlayList> createState() => _PlayListState();
-}
-
-class _PlayListState extends State<PlayList> {
   @override
   Widget build(BuildContext context) {
     final formkey = GlobalKey<FormState>();
@@ -113,10 +106,9 @@ class _PlayListState extends State<PlayList> {
           SizedBox(
             height: height / 20,
           ),
-          ValueListenableBuilder(
-            valueListenable: playlistbox.listenable(),
-            builder: (context, Box<Playlistsongs> playlistbox, child) {
-              List<Playlistsongs> playlists = playlistbox.values.toList();
+          BlocBuilder<PlaylistBloc, PlaylistState>(
+            builder: (context, state) {
+              List<Playlistsongs> playlists = state.playlistbox.values.toList();
               return Expanded(
                   child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -124,7 +116,7 @@ class _PlayListState extends State<PlayList> {
                   children: [
                     SizedBox(
                       height: double.infinity,
-                      child: playlists.isEmpty
+                      child: state.playlistbox.isEmpty
                           ? Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -235,14 +227,24 @@ class _PlayListState extends State<PlayList> {
                                                               },
                                                             ),
                                                             TextButton(
-                                                              child: Text('OK',
-                                                                  style: TextStyle(
-                                                                      color:
-                                                                          sendory)),
+                                                              child: Text(
+                                                                'OK',
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        sendory),
+                                                              ),
                                                               onPressed: () {
                                                                 playlistbox
                                                                     .deleteAt(
                                                                         index);
+                                                                BlocProvider.of<
+                                                                            PlaylistBloc>(
+                                                                        context)
+                                                                    .add(
+                                                                  GetAllPlaylist(
+                                                                      playlistbox:
+                                                                          playlistbox),
+                                                                );
                                                                 Navigator.of(
                                                                         context)
                                                                     .pop();
@@ -325,9 +327,9 @@ class _PlayListState extends State<PlayList> {
                                                                           .validate()) {
                                                                         renameplaylist(
                                                                             index,
-                                                                            renamecontroller.text);
-                                                                        setState(
-                                                                            () {});
+                                                                            renamecontroller.text,
+                                                                            context);
+
                                                                         Navigator.pop(
                                                                             context);
                                                                       }
@@ -423,7 +425,7 @@ class _PlayListState extends State<PlayList> {
                 ),
               ));
             },
-          ),
+          )
         ]),
       ),
     );

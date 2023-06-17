@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_player/bloc/recent/recentscreen_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/recentmodel/recentmodel.dart';
 import 'package:music_player/screens/commonscreens/popupmenu.dart';
@@ -23,11 +24,10 @@ class RecentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    return ValueListenableBuilder(
-      valueListenable: recentlyplayedbox.listenable(),
-      builder: (context, recentsongs, child) {
+    return BlocBuilder<RecentscreenBloc, RecentscreenState>(
+      builder: (context, state) {
         List<RecentlyPlayed> rsongs =
-            recentsongs.values.toList().reversed.toList();
+            state.recentbox.values.toList().reversed.toList();
         List<Songs> topopup = [];
         for (int i = 0; i < rsongs.length; i++) {
           topopup.add(Songs(
@@ -59,7 +59,7 @@ class RecentList extends StatelessWidget {
                         }
                       }
                       playAudio(listall, songindex);
-                      updaterecentlyplayed(rsongs[index]);
+                      updaterecentlyplayed(rsongs[index], context);
                       log(rsongs[0].songname.toString());
                     },
                     title: Text(
@@ -87,7 +87,7 @@ class RecentList extends StatelessWidget {
                     trailing: Popupmenu(
                       favicon: Icons.favorite_border,
                       height: height,
-                      index: index,
+                      idx: index,
                       songs: topopup,
                     ),
                   );

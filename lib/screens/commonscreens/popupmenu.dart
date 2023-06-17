@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:music_player/bloc/playlist/playlist_bloc.dart';
+import 'package:music_player/bloc/popupmenu/popupmenu_bloc.dart';
 import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/db/models/favoritesmodel/favoritesmodel.dart';
 import 'package:music_player/db/models/playlismodel/playlistmodel.dart';
@@ -12,63 +14,55 @@ import '../../db/functions/db_functions.dart';
 import '../../materials/material.dart';
 
 // ignore: must_be_immutable
-class Popupmenu extends StatefulWidget {
-  Popupmenu({
-    super.key,
-    required this.favicon,
-    required this.height,
-    required this.index,
-    required this.songs,
-  });
+class Popupmenu extends StatelessWidget {
   final List<Songs> songs;
   IconData favicon;
   final double height;
-  final int index;
+  final int idx;
+  Popupmenu(
+      {super.key,
+      required this.songs,
+      required this.height,
+      required this.idx,
+      required this.favicon});
 
-  @override
-  State<Popupmenu> createState() => _PopupmenuState();
-}
-
-class _PopupmenuState extends State<Popupmenu> {
   List<Favsongs> favsong = [];
 
   @override
   Widget build(BuildContext context) {
-    IconData? icon;
-    favsong = favsongbox.values.toList();
-    setState(() {
-      favsong
-              .where((element) =>
-                  element.songname == widget.songs[widget.index].songname)
-              .isEmpty
-          ? icon = Icons.favorite_border
-          : icon = Icons.favorite;
-    });
-    // int? idx;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IconButton(
-          onPressed: () {
-            Favsongs favson = Favsongs(
-                songname: widget.songs[widget.index].songname,
-                artist: widget.songs[widget.index].artist,
-                duration: widget.songs[widget.index].duration,
-                songurl: widget.songs[widget.index].songurl,
-                id: widget.songs[widget.index].id);
+        BlocBuilder<PopupmenuBloc, PopupmenuState>(
+          builder: (context, state) {
+            favsong = state.favoritesongs.values.toList();
+            return IconButton(
+              onPressed: () {
+                Favsongs favson = Favsongs(
+                    songname: songs[idx].songname,
+                    artist: songs[idx].artist,
+                    duration: songs[idx].duration,
+                    songurl: songs[idx].songurl,
+                    id: songs[idx].id);
 
-            favsong
-                    .where((element) =>
-                        element.songname == widget.songs[widget.index].songname)
-                    .isEmpty
-                ? addfavs(favson)
-                : deletefavs(favson, context, widget.songs);
-            setState(() {});
+                state.favoritesongs.values
+                        .where((element) =>
+                            element.songname == songs[idx].songname)
+                        .isEmpty
+                    ? addfavs(favson, context)
+                    : deletefavs(favson, context, songs);
+              },
+              icon: Icon(
+                state.favoritesongs.values
+                        .where((element) =>
+                            element.songname == songs[idx].songname)
+                        .isEmpty
+                    ? Icons.favorite_border
+                    : Icons.favorite,
+                color: sendory,
+              ),
+            );
           },
-          icon: Icon(
-            icon,
-            color: sendory,
-          ),
         ),
         PopupMenuButton(
           color: Colors.white,
@@ -79,16 +73,13 @@ class _PopupmenuState extends State<Popupmenu> {
                   context: context,
                   builder: (context) {
                     return SizedBox(
-                      height: widget.height * 0.3,
-                      child: StatefulBuilder(
-                        builder: (context, setState) {
-                          return ValueListenableBuilder(
-                            valueListenable: playlistbox.listenable(),
-                            builder: (context, value, child) {
-                              List<Playlistsongs> playlists =
-                                  playlistbox.values.toList();
-                              if (playlistbox.isEmpty) {
-                                return Padding(
+                      height: height * 0.3,
+                      child: BlocBuilder<PlaylistBloc, PlaylistState>(
+                        builder: (context, state) {
+                          List<Playlistsongs> playlists =
+                              state.playlistbox.values.toList();
+                          return state.playlistbox.isEmpty
+                              ? Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Column(children: [
                                     Row(
@@ -119,7 +110,7 @@ class _PopupmenuState extends State<Popupmenu> {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: widget.height * 0.20,
+                                      height: height * 0.20,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
@@ -137,143 +128,142 @@ class _PopupmenuState extends State<Popupmenu> {
                                       ),
                                     )
                                   ]),
-                                );
-                              }
-                              return Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Your playlist',
-                                            style: TextStyle(
-                                                color: sendory,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          IconButton(
-                                              onPressed: () {
-                                                Navigator.push(context,
-                                                    MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return const CreateplayList();
-                                                  },
-                                                ));
-                                              },
-                                              icon: Icon(
-                                                Icons.add_outlined,
-                                                color: sendory,
-                                              ))
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: widget.height * 0.20,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            return InkWell(
-                                              onTap: () {
-                                                var a =
-                                                    playlistbox.values.toList();
-
-                                                bool contains = false;
-                                                for (var item in a[index]
-                                                    .playlistsongs!) {
-                                                  if (item.songname ==
-                                                      widget.songs[widget.index]
-                                                          .songname) {
-                                                    contains = true;
-                                                  }
-                                                }
-
-                                                if (contains == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                    ..removeCurrentSnackBar()
-                                                    ..showSnackBar(
-                                                      SnackBar(
-                                                        backgroundColor:
-                                                            sendory,
-                                                        content: Row(
-                                                          children: [
-                                                            Text(
-                                                              'Song  already in Playlist',
-                                                              style: GoogleFonts
-                                                                  .play(
-                                                                      color:
-                                                                          primary,
-                                                                      fontSize:
-                                                                          17),
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Icon(
-                                                              Icons.info,
-                                                              color: primary,
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  Navigator.pop(context);
-                                                } else if (contains == false) {
-                                                  var a =
-                                                      playlistbox.getAt(index);
-                                                  a!.playlistsongs!.add(widget
-                                                      .songs[widget.index]);
-                                                  playlistbox.putAt(index, a);
-                                                  ScaffoldMessenger.of(context)
-                                                    ..removeCurrentSnackBar()
-                                                    ..showSnackBar(
-                                                      SnackBar(
-                                                        backgroundColor:
-                                                            sendory,
-                                                        content: Row(
-                                                          children: [
-                                                            Text(
-                                                              'Song added to Playlist',
-                                                              style: GoogleFonts
-                                                                  .play(
-                                                                      color:
-                                                                          primary,
-                                                                      fontSize:
-                                                                          17),
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            Icon(
-                                                              Icons.info,
-                                                              color: primary,
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  Navigator.pop(context);
-                                                }
-                                              },
-                                              child: CardsList(
-                                                  idx: 0,
-                                                  icon: Icons
-                                                      .queue_music_outlined,
-                                                  ftitle: playlists[index]
-                                                      .playlistname,
-                                                  stitle: 'Playlist'),
-                                            );
-                                          },
-                                          itemCount: playlists.length,
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Your playlist',
+                                              style: TextStyle(
+                                                  color: sendory,
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            IconButton(
+                                                onPressed: () {
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return const CreateplayList();
+                                                    },
+                                                  ));
+                                                },
+                                                icon: Icon(
+                                                  Icons.add_outlined,
+                                                  color: sendory,
+                                                ))
+                                          ],
                                         ),
-                                      )
-                                    ]),
-                              );
-                            },
-                          );
+                                        SizedBox(
+                                          height: height * 0.20,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  var a = playlistbox.values
+                                                      .toList();
+
+                                                  bool contains = false;
+                                                  for (var item in a[index]
+                                                      .playlistsongs!) {
+                                                    if (item.songname ==
+                                                        songs[idx].songname) {
+                                                      contains = true;
+                                                    }
+                                                  }
+
+                                                  if (contains == true) {
+                                                    ScaffoldMessenger.of(
+                                                        context)
+                                                      ..removeCurrentSnackBar()
+                                                      ..showSnackBar(
+                                                        SnackBar(
+                                                          backgroundColor:
+                                                              sendory,
+                                                          content: Row(
+                                                            children: [
+                                                              Text(
+                                                                'Song already in Playlist',
+                                                                style: GoogleFonts
+                                                                    .play(
+                                                                        color:
+                                                                            primary,
+                                                                        fontSize:
+                                                                            17),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Icon(
+                                                                Icons.info,
+                                                                color: primary,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    Navigator.pop(context);
+                                                  } else if (contains ==
+                                                      false) {
+                                                    var a = playlistbox
+                                                        .getAt(index);
+                                                    a!.playlistsongs!
+                                                        .add(songs[idx]);
+                                                    playlistbox.putAt(index, a);
+                                                    ScaffoldMessenger.of(
+                                                        context)
+                                                      ..removeCurrentSnackBar()
+                                                      ..showSnackBar(
+                                                        SnackBar(
+                                                          backgroundColor:
+                                                              sendory,
+                                                          content: Row(
+                                                            children: [
+                                                              Text(
+                                                                'Song added to Playlist',
+                                                                style: GoogleFonts
+                                                                    .play(
+                                                                        color:
+                                                                            primary,
+                                                                        fontSize:
+                                                                            17),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Icon(
+                                                                Icons.info,
+                                                                color: primary,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    Navigator.pop(context);
+                                                  }
+                                                },
+                                                child: CardsList(
+                                                    idx: 0,
+                                                    icon: Icons
+                                                        .queue_music_outlined,
+                                                    ftitle: playlists[index]
+                                                        .playlistname,
+                                                    stitle: 'Playlist'),
+                                              );
+                                            },
+                                            itemCount: playlists.length,
+                                          ),
+                                        )
+                                      ]),
+                                );
                         },
                       ),
                     );
@@ -371,9 +361,10 @@ class _PopupmenuState extends State<Popupmenu> {
     }
   }
 
-  addfavs(Favsongs favson) async {
+  addfavs(Favsongs favson, BuildContext context) async {
     await favsongbox.add(favson);
     favoritelistener.value.add(favson);
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(SnackBar(
@@ -394,13 +385,17 @@ class _PopupmenuState extends State<Popupmenu> {
           ],
         ),
       ));
+    // ignore: use_build_context_synchronously
+    BlocProvider.of<PopupmenuBloc>(context)
+        .add(AddtoFavEvent(favoritesongs: favsongbox));
   }
 
   deletefavs(Favsongs favson, BuildContext context, songlist) async {
-    int currentidx = favsong
-        .indexWhere((element) => element.id == songlist[widget.index].id);
+    int currentidx =
+        favsong.indexWhere((element) => element.id == songlist[idx].id);
     await favsongbox.deleteAt(currentidx);
     favoritelistener.value.remove(favson);
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(
@@ -423,5 +418,8 @@ class _PopupmenuState extends State<Popupmenu> {
           ),
         ),
       );
+    // ignore: use_build_context_synchronously
+    BlocProvider.of<PopupmenuBloc>(context)
+        .add(AddtoFavEvent(favoritesongs: favsongbox));
   }
 }

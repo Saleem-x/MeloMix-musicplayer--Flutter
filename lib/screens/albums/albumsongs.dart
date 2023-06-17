@@ -8,6 +8,7 @@ import 'package:music_player/screens/miniplayer/miniplayer.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../materials/material.dart';
 
+// ignore: must_be_immutable
 class AlbumSongs extends StatefulWidget {
   AlbumModel albums;
   AlbumSongs({

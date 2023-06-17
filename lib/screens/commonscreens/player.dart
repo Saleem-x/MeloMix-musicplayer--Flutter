@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
@@ -17,7 +16,6 @@ import '../../materials/material.dart';
 import '../favorites/favoriteslist.dart';
 import '../homescreen/homescreen.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-
 import 'functions.dart';
 
 Favsongs? tofav;
@@ -45,7 +43,7 @@ class _PlayerScreenState extends State<PlayerScreen>
 
   @override
   void dispose() {
-    controller;
+    controller!.dispose();
     super.dispose();
   }
 
@@ -71,7 +69,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                     .isEmpty
                 ? favicon = Icons.favorite_border
                 : favicon = Icons.favorite;
-            find(player.getCurrentAudioTitle);
+            find(player.getCurrentAudioTitle, context);
             return Stack(
               children: [
                 Column(
@@ -195,6 +193,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                     icon: const Icon(
                                       Icons.lyrics,
                                       size: 40,
+                                      color: Colors.white,
                                     ),
                                     onPressed: () async {
                                       String title =
@@ -234,6 +233,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                         // ignore: use_build_context_synchronously
                                         showlirics(context, lyric);
                                       } else {
+                                        // ignore: use_build_context_synchronously
                                         ScaffoldMessenger.of(context)
                                           ..removeCurrentSnackBar()
                                           ..showSnackBar(SnackBar(
@@ -345,7 +345,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                         player.previous();
                                         String tittle =
                                             player.getCurrentAudioTitle;
-                                        song(tittle);
+                                        song(tittle, context);
                                       },
                                       icon: const Icon(
                                         FontAwesomeIcons.backward,
@@ -403,7 +403,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                         player.next();
                                         String tittle =
                                             player.getCurrentAudioTitle;
-                                        song(tittle);
+                                        song(tittle, context);
                                       },
                                       icon: const Icon(
                                         FontAwesomeIcons.forward,
@@ -550,6 +550,7 @@ class _PlayerScreenState extends State<PlayerScreen>
 addfavs(Favsongs favson, BuildContext context) async {
   await favsongbox.add(favson);
   favoritelistener.value.add(favson);
+  // ignore: use_build_context_synchronously
   ScaffoldMessenger.of(context)
     ..removeCurrentSnackBar()
     ..showSnackBar(SnackBar(
@@ -577,6 +578,7 @@ deletefavs(Favsongs favson, BuildContext context, songlist) async {
   int idx = fav.indexWhere((element) => element.songname == favson.songname);
   await favsongbox.deleteAt(idx);
 
+  // ignore: use_build_context_synchronously
   ScaffoldMessenger.of(context)
     ..removeCurrentSnackBar()
     ..showSnackBar(

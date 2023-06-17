@@ -19,6 +19,7 @@ showlirics(BuildContext context, String lyrics) {
                   color: primary),
               child: ListView(
                 children: [
+                  // ignore: unnecessary_null_comparison
                   lyrics != null
                       ? Padding(
                           padding: const EdgeInsets.all(20),
@@ -29,10 +30,10 @@ showlirics(BuildContext context, String lyrics) {
                               fontSize: 25,
                             ),
                           ))
-                      : Column(
+                      : const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [Text('No Lyrics available')],
+                          children: [Text('No Lyrics available')],
                         )
                 ],
               )),

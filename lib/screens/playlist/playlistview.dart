@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_player/bloc/playlist/playlist_bloc.dart';
 import 'package:music_player/db/functions/playerfunctions.dart';
 import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/materials/material.dart';
@@ -11,21 +13,16 @@ import 'package:music_player/screens/playlist/functions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 // ignore: must_be_immutable
-class Playlistsongview extends StatefulWidget {
-  Playlistsongview(
-      {super.key,
-      required this.songtoplay,
-      required this.playlistname,
-      required this.plindex});
+class Playlistsongview extends StatelessWidget {
   List<Songs> songtoplay;
   final String playlistname;
   final int plindex;
+  Playlistsongview(
+      {super.key,
+      required this.playlistname,
+      required this.plindex,
+      required this.songtoplay});
 
-  @override
-  State<Playlistsongview> createState() => _PlaylistsongviewState();
-}
-
-class _PlaylistsongviewState extends State<Playlistsongview> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
@@ -61,7 +58,7 @@ class _PlaylistsongviewState extends State<Playlistsongview> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: Text(
-                      widget.playlistname,
+                      playlistname,
                       style: TextStyle(
                           color: sendory,
                           fontSize: 17,
@@ -87,7 +84,7 @@ class _PlaylistsongviewState extends State<Playlistsongview> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 25),
-                      child: widget.songtoplay.isEmpty
+                      child: songtoplay.isEmpty
                           ? Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -100,101 +97,115 @@ class _PlaylistsongviewState extends State<Playlistsongview> {
                                 ],
                               ),
                             )
-                          : ListView.separated(
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  onTap: () {
-                                    playlistAudios(widget.songtoplay, index);
-                                    log(widget.songtoplay[index].id!
-                                        .toString());
-                                    // int tid;
-                                  },
-                                  title: Text(
-                                      widget.songtoplay[index].songname!,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.play(
-                                          fontSize: 17, color: Colors.white)),
-                                  subtitle: Text(
-                                      widget.songtoplay[index].artist!,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.play(
-                                          fontSize: 17, color: Colors.white)),
-                                  leading: CircleAvatar(
-                                    backgroundColor: sendory,
-                                    child: ClipOval(
-                                      child: QueryArtworkWidget(
-                                        id: widget.songtoplay[index].id!,
-                                        type: ArtworkType.AUDIO,
-                                        nullArtworkWidget: Image.asset(
-                                            'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
-                                      ),
-                                    ),
-                                  ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                backgroundColor: primary,
-                                                title: Text(
-                                                  'Delete Song',
-                                                  style:
-                                                      TextStyle(color: sendory),
-                                                ),
-                                                content: Text(
-                                                    'Do You Want to delete this song',
-                                                    style: TextStyle(
-                                                        color: sendory)),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: Text('Cancel',
-                                                        style: TextStyle(
-                                                            color: sendory)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                  TextButton(
-                                                    child: Text('OK',
-                                                        style: TextStyle(
-                                                            color: sendory)),
-                                                    onPressed: () {
-                                                      deletesong(index,
-                                                          widget.plindex);
-                                                      setState(() {});
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
+                          : BlocBuilder<PlaylistBloc, PlaylistState>(
+                              builder: (context, state) {
+                                songtoplay = state.playlistbox.values
+                                    .toList()[plindex]
+                                    .playlistsongs!;
+                                return ListView.separated(
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        onTap: () {
+                                          playlistAudios(songtoplay, index);
+                                          log(songtoplay[index].id!.toString());
+                                          // int tid;
                                         },
-                                        icon: const Icon(
-                                          FontAwesomeIcons.ellipsisVertical,
-                                          color: Colors.white,
+                                        title: Text(songtoplay[index].songname!,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.play(
+                                                fontSize: 17,
+                                                color: Colors.white)),
+                                        subtitle: Text(
+                                            songtoplay[index].artist!,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.play(
+                                                fontSize: 17,
+                                                color: Colors.white)),
+                                        leading: CircleAvatar(
+                                          backgroundColor: sendory,
+                                          child: ClipOval(
+                                            child: QueryArtworkWidget(
+                                              id: songtoplay[index].id!,
+                                              type: ArtworkType.AUDIO,
+                                              nullArtworkWidget: Image.asset(
+                                                  'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                                        trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      backgroundColor: primary,
+                                                      title: Text(
+                                                        'Delete Song',
+                                                        style: TextStyle(
+                                                            color: sendory),
+                                                      ),
+                                                      content: Text(
+                                                          'Do You Want to delete this song',
+                                                          style: TextStyle(
+                                                              color: sendory)),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          child: Text('Cancel',
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      sendory)),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                        TextButton(
+                                                          child: Text('OK',
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      sendory)),
+                                                          onPressed: () {
+                                                            deletesong(
+                                                                index,
+                                                                plindex,
+                                                                context);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                FontAwesomeIcons
+                                                    .ellipsisVertical,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return Divider(
+                                        thickness: 1,
+                                        color: sendory,
+                                        endIndent: 20,
+                                        indent: 20,
+                                        height: 0,
+                                      );
+                                    },
+                                    itemCount: songtoplay.length);
                               },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  thickness: 1,
-                                  color: sendory,
-                                  endIndent: 20,
-                                  indent: 20,
-                                  height: 0,
-                                );
-                              },
-                              itemCount: widget.songtoplay.length),
+                            ),
                     ),
                   ),
                   const Padding(

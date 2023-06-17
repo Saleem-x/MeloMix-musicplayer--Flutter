@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:music_player/bloc/favorite/favorite_bloc.dart';
+import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/screens/favorites/favoriteslist.dart';
 import '../../materials/material.dart';
 import '../miniplayer/miniplayer.dart';
@@ -14,6 +17,8 @@ class FavoriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+    BlocProvider.of<FavoriteBloc>(context)
+        .add(FavoriteSongsListEvent(favsongbox: favsongbox));
     return Scaffold(
       backgroundColor: sendory,
       body: SafeArea(
@@ -64,9 +69,9 @@ class FavoriteScreen extends StatelessWidget {
               )
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(children: const [
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(children: [
               SizedBox(
                 height: 30,
               ),

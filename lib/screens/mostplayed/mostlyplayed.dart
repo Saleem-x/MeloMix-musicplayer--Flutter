@@ -172,7 +172,7 @@ class MostlyPlayed extends StatelessWidget {
                                         Popupmenu(
                                             favicon: Icons.favorite,
                                             height: height,
-                                            index: index,
+                                            idx: index,
                                             songs: favl)
                                       ]),
                                 );

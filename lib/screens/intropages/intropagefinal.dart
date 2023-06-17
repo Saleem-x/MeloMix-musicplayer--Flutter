@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../materials/material.dart';
 import '../homescreen/homescreen.dart';
 import '../splashscreen.dart';
-import 'package:slide_to_act/slide_to_act.dart';
 
 class IntroPagefinal extends StatefulWidget {
   const IntroPagefinal({super.key});
@@ -30,7 +28,7 @@ class _IntroPagefinalState extends State<IntroPagefinal> {
             bottom: 100,
             left: 20,
             right: 20,
-            child: SlideAction(
+            child: /* SlideAction(
               innerColor: sendory,
               outerColor: primary,
               text: 'Swipe to Enter',
@@ -41,6 +39,16 @@ class _IntroPagefinalState extends State<IntroPagefinal> {
               onSubmit: () {
                 goTomain(context);
               },
+            ), */
+                SizedBox(
+              width: 100,
+              child: MaterialButton(
+                color: Colors.blue,
+                onPressed: () {
+                  goTomain(context);
+                },
+                child: const Text('Start'),
+              ),
             ),
           )
         ],

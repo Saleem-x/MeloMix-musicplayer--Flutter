@@ -26,30 +26,10 @@ List<Audio> currentplaylist = [];
 List<Audio> currentfavlist = [];
 List<Audio> mostplay = [];
 
-// ignore: must_be_immutable
-class HomeScreen extends StatefulWidget {
-  String? username;
-  HomeScreen({super.key, this.username});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   final audioquery = OnAudioQuery();
-  @override
-  void initState() {
-    for (var item in dbsongs) {
-      playinglistAudio.add(Audio.file(item.songurl!,
-          metas: Metas(
-              title: item.songname,
-              artist: item.artist,
-              id: item.id.toString())));
-    }
-    setState(() {});
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;

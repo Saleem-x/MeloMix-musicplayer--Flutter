@@ -180,7 +180,7 @@ class _SearchScreeenState extends State<SearchScreeen> {
                                 trailing: Popupmenu(
                                     favicon: Icons.favorite_border,
                                     height: height,
-                                    index: index,
+                                    idx: index,
                                     songs: searchsongs));
                           },
                           separatorBuilder: (context, index) {

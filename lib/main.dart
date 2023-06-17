@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:music_player/bloc/allsongs/allsongs_bloc.dart';
+import 'package:music_player/bloc/favorite/favorite_bloc.dart';
+import 'package:music_player/bloc/playlist/playlist_bloc.dart';
+import 'package:music_player/bloc/playlist/playlisticon.dart';
+import 'package:music_player/bloc/popupmenu/popupmenu_bloc.dart';
+import 'package:music_player/bloc/recent/recentscreen_bloc.dart';
+import 'package:music_player/bloc/splashscreenbloc/splashscreen_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/db/models/favoritesmodel/favoritesmodel.dart';
@@ -46,10 +54,35 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      home: const SplasScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SplashscreenBloc>(
+          create: (context) => SplashscreenBloc(),
+        ),
+        BlocProvider<RecentscreenBloc>(
+          create: (context) => RecentscreenBloc(),
+        ),
+        BlocProvider<PopupmenuBloc>(
+          create: (context) => PopupmenuBloc(),
+        ),
+        BlocProvider<AllsongsBloc>(
+          create: (context) => AllsongsBloc(),
+        ),
+        BlocProvider<PlaylistBloc>(
+          create: (context) => PlaylistBloc(),
+        ),
+        BlocProvider<FavoriteBloc>(
+          create: (context) => FavoriteBloc(),
+        ),
+        BlocProvider<IconCubit>(
+          create: (context) => IconCubit(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.light(),
+        home: SplasScreen(),
+      ),
     );
   }
 }

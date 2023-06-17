@@ -1,7 +1,7 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:music_player/bloc/allsongs/allsongs_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/functions/playerfunctions.dart';
 import 'package:music_player/db/models/db_model.dart';
@@ -14,53 +14,16 @@ import '../../materials/material.dart';
 import '../homescreen/homescreen.dart';
 import '../searchscreen/searchwidget.dart';
 
-// import 'package:audioplayers/audioplayers.dart';
-
-// ignore: must_be_immutable
-class AllSongsList extends StatefulWidget {
-  const AllSongsList({
-    super.key,
-  });
-
-  @override
-  State<AllSongsList> createState() => _AllSongsListState();
-}
-
-class _AllSongsListState extends State<AllSongsList> {
-  bool? isplaying;
-  IconData? playicon;
-  final box = SongBox.getInstance();
-  List<Audio> convertAudio = [];
-
-  Duration dur = const Duration();
-  Duration pos = const Duration();
-
-  @override
-  void initState() {
-    List<Songs> dbsongs = box.values.toList();
-    for (var item in dbsongs) {
-      convertAudio.add(
-        Audio.file(
-          item.songurl!,
-          metas: Metas(
-            title: item.songname,
-            artist: item.artist,
-            id: item.id.toString(),
-          ),
-        ),
-      );
-    }
-    super.initState();
-  }
+class AllSongsList extends StatelessWidget {
+  const AllSongsList({super.key});
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    return ValueListenableBuilder<Box<Songs>>(
-      valueListenable: box.listenable(),
-      builder: (context, Box<Songs> allsongbox, child) {
-        List<Songs> allDbSongs = allsongbox.values.toList();
-        return allDbSongs.isEmpty
+    return BlocBuilder<AllsongsBloc, AllsongsState>(
+      builder: (context, state) {
+        List<Songs> allDbSongs = state.allsongs.values.toList();
+        return state.allsongs.isEmpty
             ? songlistempty()
             : Stack(
                 children: [
@@ -112,7 +75,7 @@ class _AllSongsListState extends State<AllSongsList> {
                                 trailing: Popupmenu(
                                   favicon: favicon,
                                   height: height,
-                                  index: index,
+                                  idx: index,
                                   songs: listall,
                                 ),
                               );
@@ -126,7 +89,7 @@ class _AllSongsListState extends State<AllSongsList> {
                                 height: 0,
                               );
                             },
-                            itemCount: allDbSongs.length),
+                            itemCount: state.allsongs.length),
                       ),
                     ],
                   ),

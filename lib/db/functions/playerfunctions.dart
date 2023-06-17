@@ -1,5 +1,4 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/db/models/favoritesmodel/favoritesmodel.dart';
 import 'package:music_player/db/models/mostplayedmodel/mostplayed.dart';
@@ -14,8 +13,8 @@ playAudio(List<Songs> songs, int index) async {
             title: item.songname,
             artist: item.artist,
             id: item.id.toString())));
-    var k = addtorec(songs[index]);
-    updaterecentlyplayed(k);
+    // var k = addtorec(songs[index]);
+    // updaterecentlyplayed(k,);
   }
   player.open(
     Playlist(audios: playinglistAudio, startIndex: index),

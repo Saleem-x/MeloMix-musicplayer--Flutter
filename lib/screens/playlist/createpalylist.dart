@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music_player/db/functions/db_functions.dart';
@@ -8,6 +9,8 @@ import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/playlist/playlistwidget.dart';
 import 'package:music_player/screens/searchscreen/searchwidget.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../bloc/playlist/playlisticon.dart';
 
 class CreateplayList extends StatefulWidget {
   const CreateplayList({super.key});
@@ -186,10 +189,29 @@ class _CreateplayListState extends State<CreateplayList> {
                                   'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
                               id: songs.id!,
                               type: ArtworkType.AUDIO)),
-                      trailing: PopUp2(
-                          plsongs: plsongs,
-                          index: index,
-                          icon: Icons.add_circle),
+                      trailing: IconButton(
+                        onPressed: () {
+                          Songs song = listall[index];
+                          if (plsongs.contains(listall[index])) {
+                            plsongs.remove(song);
+                            context.read<IconCubit>().add();
+                            // widget.icon = Icons.add_circle;
+                          } else {
+                            plsongs.add(song);
+                            context.read<IconCubit>().remove();
+                            // widget.icon = Icons.remove_circle;
+                          }
+                          // setState(() {});
+                        },
+                        icon: BlocBuilder<IconCubit, IconData>(
+                          builder: (context, state) {
+                            return Icon(
+                              state,
+                              color: sendory,
+                            );
+                          },
+                        ),
+                      ),
                     );
                   },
                   separatorBuilder: (context, index) {

@@ -70,7 +70,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                       children: [
                         player.builderCurrent(
                           builder: (context, playing) {
-                            find(player.getCurrentAudioTitle);
+                            find(player.getCurrentAudioTitle, context);
                             return Row(
                               children: [
                                 Expanded(
@@ -126,7 +126,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                                               player.previous();
                                                               String tittle = player
                                                                   .getCurrentAudioTitle;
-                                                              song(tittle);
+                                                              song(tittle,
+                                                                  context);
                                                             },
                                                             icon: Icon(
                                                               FontAwesomeIcons
@@ -158,7 +159,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                                               player.next();
                                                               String tittle = player
                                                                   .getCurrentAudioTitle;
-                                                              song(tittle);
+                                                              song(tittle,
+                                                                  context);
                                                             },
                                                             icon: Icon(
                                                               FontAwesomeIcons
@@ -192,10 +194,10 @@ class _MiniPlayerState extends State<MiniPlayer> {
   }
 }
 
-song(String title) {
+song(String title, BuildContext context) {
   for (Songs song in listall) {
     if (song.songname == title) {
-      updaterecentlyplayed(addtorec(song));
+      updaterecentlyplayed(addtorec(song), context);
       log(song.songname!);
     }
   }
@@ -210,15 +212,17 @@ RecentlyPlayed addtorec(Songs songs) {
       duration: songs.duration);
 }
 
-find(String title) {
+find(String title, BuildContext context) {
   for (var song in listall) {
     if (song.songname == title) {
-      updaterecentlyplayed(RecentlyPlayed(
-          id: song.id,
-          songname: song.songname,
-          artist: song.artist,
-          songurl: song.songurl,
-          duration: song.duration));
+      updaterecentlyplayed(
+          RecentlyPlayed(
+              id: song.id,
+              songname: song.songname,
+              artist: song.artist,
+              songurl: song.songurl,
+              duration: song.duration),
+          context);
     }
   }
 }

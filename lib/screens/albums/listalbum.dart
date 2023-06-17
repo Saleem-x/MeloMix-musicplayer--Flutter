@@ -5,6 +5,7 @@ import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/albums/albumsongs.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+// ignore: must_be_immutable
 class ListAlbums extends StatefulWidget {
   List<AlbumModel> albums;
   ListAlbums({super.key, required this.albums});

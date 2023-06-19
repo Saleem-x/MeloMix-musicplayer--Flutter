@@ -101,7 +101,8 @@ class RecentList extends StatelessWidget {
                     height: 0,
                   );
                 },
-                itemCount: rsongs.length >= 10 ? 10 : rsongs.length);
+                itemCount: rsongs.length >= 10 ? 10 : rsongs.length,
+              );
       },
     );
   }

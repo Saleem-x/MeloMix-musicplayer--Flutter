@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:music_player/bloc/albums/albums_bloc.dart';
 import 'package:music_player/bloc/allsongs/allsongs_bloc.dart';
+import 'package:music_player/bloc/currentplaying/playerscreen_bloc.dart';
 import 'package:music_player/bloc/favorite/favorite_bloc.dart';
+import 'package:music_player/bloc/findmusic/findmusic_bloc.dart';
+import 'package:music_player/bloc/mostplayed/mostplayed_bloc.dart';
 import 'package:music_player/bloc/playlist/playlist_bloc.dart';
-import 'package:music_player/bloc/playlist/playlisticon.dart';
 import 'package:music_player/bloc/popupmenu/popupmenu_bloc.dart';
 import 'package:music_player/bloc/recent/recentscreen_bloc.dart';
+import 'package:music_player/bloc/search/search_bloc.dart';
 import 'package:music_player/bloc/splashscreenbloc/splashscreen_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/db_model.dart';
@@ -74,13 +78,29 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<FavoriteBloc>(
           create: (context) => FavoriteBloc(),
         ),
-        BlocProvider<IconCubit>(
-          create: (context) => IconCubit(),
+        // BlocProvider<IconCubit>(
+        //   create: (context) => IconCubit(),
+        // ),
+        BlocProvider<MostplayedBloc>(
+          create: (context) => MostplayedBloc(),
+        ),
+        BlocProvider<FindmusicBloc>(
+          create: (context) => FindmusicBloc(),
+        ),
+        BlocProvider<AlbumsBloc>(
+          create: (context) => AlbumsBloc(),
+        ),
+        BlocProvider<SearchBloc>(
+          create: (context) => SearchBloc(),
+        ),
+        BlocProvider<PlayerscreenBloc>(
+          create: (context) => PlayerscreenBloc(),
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         home: SplasScreen(),
       ),
     );

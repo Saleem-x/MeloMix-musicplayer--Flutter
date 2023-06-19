@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_player/bloc/playlist/playlisticon.dart';
 import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/searchscreen/searchwidget.dart';
@@ -31,23 +29,16 @@ class _PopUp2State extends State<PopUp2> {
             Songs song = listall[widget.index];
             if (widget.plsongs.contains(listall[widget.index])) {
               widget.plsongs.remove(song);
-              context.read<IconCubit>().add();
-              // widget.icon = Icons.add_circle;
+              widget.icon = Icons.add_circle;
             } else {
               widget.plsongs.add(song);
-              context.read<IconCubit>().remove();
-              // widget.icon = Icons.remove_circle;
+              widget.icon = Icons.remove_circle;
             }
-            // setState(() {});
+            setState(() {});
           },
-          icon: BlocBuilder<IconCubit, IconData>(
-            builder: (context, state) {
-              widget.icon = state;
-              return Icon(
-                widget.icon,
-                color: sendory,
-              );
-            },
+          icon: Icon(
+            widget.icon,
+            color: sendory,
           ),
         ),
       ],

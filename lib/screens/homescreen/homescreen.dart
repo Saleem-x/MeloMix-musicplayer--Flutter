@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: ((context) {
-                              return const SearchScreeen();
+                              return SearchScreen();
                             }),
                           ),
                         );
@@ -207,7 +207,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const FindMusic();
+                              return FindMusic();
                             }));
                           },
                           child: const CardsList(
@@ -220,7 +220,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const AlbumScreen();
+                              return AlbumScreen();
                             }));
                           },
                           child: const CardsList(

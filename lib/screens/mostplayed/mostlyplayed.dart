@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_player/bloc/mostplayed/mostplayed_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/functions/playerfunctions.dart';
 import 'package:music_player/db/models/db_model.dart';
@@ -100,94 +101,97 @@ class MostlyPlayed extends StatelessWidget {
                   ),
                   child: Padding(
                       padding: const EdgeInsets.only(top: 15),
-                      child: ValueListenableBuilder(
-                        valueListenable: mostplayedsongs.listenable(),
-                        builder: (context, mostplayedsongs, child) {
+                      child: BlocBuilder<MostplayedBloc, MostplayedState>(
+                        builder: (context, state) {
                           tolist = addtolist();
-                          if (tolist.isEmpty) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Lottie.asset('assets/search-not-found.json'),
-                                  const Text(
-                                    'Play more Songs',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                          return ListView.separated(
-                              itemBuilder: (context, index) {
-                                converttolist(tolist, favl);
-                                return ListTile(
-                                  onTap: () {
-                                    playmostplayed(tolist, index);
-                                    updatecount(tolist[index]);
-                                  },
-                                  title: Text(tolist[index].songname,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.play(
-                                          color: Colors.white)),
-                                  subtitle: Text(
-                                      tolist[index]
-                                          .artist
-                                          .toUpperCase()
-                                          .toLowerCase()
-                                          .replaceAll('?', ''),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.play(
-                                          color: Colors.white)),
-                                  leading: CircleAvatar(
-                                    backgroundColor: sendory,
-                                    child: ClipOval(
-                                      child: QueryArtworkWidget(
-                                        id: tolist[index].id,
-                                        type: ArtworkType.AUDIO,
-                                        nullArtworkWidget: Image.asset(
-                                            'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
+                          return tolist.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Lottie.asset(
+                                          'assets/search-not-found.json'),
+                                      const Text(
+                                        'Play more Songs',
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                  trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                              color: sendory,
-                                              borderRadius:
-                                                  BorderRadius.circular(30)),
-                                          child: Center(
-                                            child: Text(
-                                              tolist[index].count.toString(),
-                                              style: TextStyle(color: primary),
-                                            ),
+                                )
+                              : ListView.separated(
+                                  itemBuilder: (context, index) {
+                                    converttolist(tolist, favl);
+                                    return ListTile(
+                                      onTap: () {
+                                        playmostplayed(tolist, index);
+                                        updatecount(tolist[index], context);
+                                      },
+                                      title: Text(tolist[index].songname,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.play(
+                                              color: Colors.white)),
+                                      subtitle: Text(
+                                          tolist[index]
+                                              .artist
+                                              .toUpperCase()
+                                              .toLowerCase()
+                                              .replaceAll('?', ''),
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.play(
+                                              color: Colors.white)),
+                                      leading: CircleAvatar(
+                                        backgroundColor: sendory,
+                                        child: ClipOval(
+                                          child: QueryArtworkWidget(
+                                            id: tolist[index].id,
+                                            type: ArtworkType.AUDIO,
+                                            nullArtworkWidget: Image.asset(
+                                                'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
                                           ),
                                         ),
-                                        Popupmenu(
-                                            favicon: Icons.favorite,
-                                            height: height,
-                                            idx: index,
-                                            songs: favl)
-                                      ]),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  thickness: 1,
-                                  color: sendory,
-                                  endIndent: 20,
-                                  indent: 20,
-                                  height: 0,
-                                );
-                              },
-                              itemCount:
-                                  tolist.length >= 15 ? 15 : tolist.length);
+                                      ),
+                                      trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  color: sendory,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                              child: Center(
+                                                child: Text(
+                                                  tolist[index]
+                                                      .count
+                                                      .toString(),
+                                                  style:
+                                                      TextStyle(color: primary),
+                                                ),
+                                              ),
+                                            ),
+                                            Popupmenu(
+                                                favicon: Icons.favorite,
+                                                height: height,
+                                                idx: index,
+                                                songs: favl)
+                                          ]),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Divider(
+                                      thickness: 1,
+                                      color: sendory,
+                                      endIndent: 20,
+                                      indent: 20,
+                                      height: 0,
+                                    );
+                                  },
+                                  itemCount:
+                                      tolist.length >= 15 ? 15 : tolist.length);
                         },
                       )),
                 ),
@@ -206,10 +210,12 @@ class MostlyPlayed extends StatelessWidget {
     );
   }
 
-  updatecount(MostPlayed data) {
+  updatecount(MostPlayed data, BuildContext context) {
     int idx = allmpsongs.indexWhere((element) => element == data);
     int count = data.count!;
     data.count = count + 1;
     mostplayedsongs.put(idx, data);
+    BlocProvider.of<MostplayedBloc>(context)
+        .add(GetAllMPSongsEvent(mostplayedsongs: mostplayedsongs));
   }
 }

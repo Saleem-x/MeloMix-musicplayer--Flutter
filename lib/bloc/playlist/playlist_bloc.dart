@@ -3,7 +3,6 @@ import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/playlismodel/playlistmodel.dart';
-
 part 'playlist_event.dart';
 part 'playlist_state.dart';
 

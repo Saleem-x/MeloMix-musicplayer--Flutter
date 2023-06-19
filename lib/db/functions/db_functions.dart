@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:music_player/bloc/mostplayed/mostplayed_bloc.dart';
 import 'package:music_player/bloc/playlist/playlist_bloc.dart';
 import 'package:music_player/bloc/recent/recentscreen_bloc.dart';
 import 'package:music_player/db/models/favoritesmodel/favoritesmodel.dart';
@@ -49,7 +50,7 @@ openmostpllayeddb() async {
   mostplayedsongs = await Hive.openBox('mostplayeddb');
 }
 
-updatempcount(MostPlayed data, int index) async {
+updatempcount(MostPlayed data, int index, BuildContext context) async {
   List<MostPlayed> templist = mostplayedsongs.values.toList();
   bool isallready =
       templist.where((element) => element.songname == data.songname).isEmpty;
@@ -63,6 +64,9 @@ updatempcount(MostPlayed data, int index) async {
   }
   int count = data.count ?? 0;
   data.count = count + 1;
+  // ignore: use_build_context_synchronously
+  BlocProvider.of<MostplayedBloc>(context)
+      .add(GetAllMPSongsEvent(mostplayedsongs: mostplayedsongs));
 }
 
 renameplaylist(int index, String newname, BuildContext context) async {

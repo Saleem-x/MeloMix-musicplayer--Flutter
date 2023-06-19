@@ -1,41 +1,35 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_player/bloc/search/search_bloc.dart';
 import 'package:music_player/db/functions/playerfunctions.dart';
 import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/commonscreens/popupmenu.dart';
 import 'package:music_player/screens/searchscreen/searchwidget.dart';
-import 'package:music_player/screens/splashscreen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../db/models/db_model.dart';
 import '../miniplayer/miniplayer.dart';
+// List<Songs> searchsongs = [];
+// List<Songs> dbsongs = listall;
 
-final searchcontroller = TextEditingController();
-List<Songs> searchsongs = List.from(dbsongs);
-List<Songs> dbsongs = listall;
-List<Audio> allsongsin = [];
+// ignore: must_be_immutable
+class SearchScreen extends StatelessWidget {
+  SearchScreen({super.key});
 
-class SearchScreeen extends StatefulWidget {
-  const SearchScreeen({super.key});
+  List<Songs> dbsongs = listall;
 
-  @override
-  State<SearchScreeen> createState() => _SearchScreeenState();
-}
-
-class _SearchScreeenState extends State<SearchScreeen> {
-  @override
-  void initState() {
-    setState(() {});
-    super.initState();
-  }
-
+  List<Songs> searchsongs = [];
+  final searchcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // searchsongs = List.from(dbsongs);
+      BlocProvider.of<SearchBloc>(context).add(SearchingSongEvent(listall));
+    });
     return Scaffold(
       backgroundColor: sendory,
       body: SafeArea(
@@ -48,6 +42,10 @@ class _SearchScreeenState extends State<SearchScreeen> {
                 children: [
                   IconButton(
                     onPressed: () {
+                      // searchsongs = dbsongs;
+                      searchcontroller.clear();
+                      BlocProvider.of<SearchBloc>(context)
+                          .add(SearchingSongEvent(listall));
                       Navigator.of(context).pop();
                     },
                     icon: Icon(
@@ -92,7 +90,7 @@ class _SearchScreeenState extends State<SearchScreeen> {
                     alignment: Alignment.centerLeft,
                     child: TextFormField(
                       controller: searchcontroller,
-                      onChanged: (value) => search(value),
+                      onChanged: (value) => search(value, context),
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                           prefixIcon: const Icon(
@@ -102,9 +100,10 @@ class _SearchScreeenState extends State<SearchScreeen> {
                           ),
                           suffixIcon: IconButton(
                             onPressed: () {
-                              setState(() {
-                                searchcontroller.clear();
-                              });
+                              searchcontroller.clear();
+                              // searchsongs = dbsongs;
+                              BlocProvider.of<SearchBloc>(context)
+                                  .add(SearchingSongEvent(listall));
                             },
                             icon: Icon(
                               Icons.clear,
@@ -129,70 +128,77 @@ class _SearchScreeenState extends State<SearchScreeen> {
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30)),
                       color: primary),
-                  child: searchsongs.isEmpty
-                      ? Center(
-                          child: ListView(
-                            children: [
-                              Lottie.asset('assets/search-not-found.json'),
-                              Center(
-                                child: Text(
-                                  'No Songs Found',
-                                  style: TextStyle(
-                                      color: sendory,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                  child: BlocBuilder<SearchBloc, SearchState>(
+                    builder: (context, state) {
+                      return state.searchedsongs.isEmpty
+                          ? Center(
+                              child: ListView(
+                                children: [
+                                  Lottie.asset('assets/search-not-found.json'),
+                                  Center(
+                                    child: Text(
+                                      'No Songs Found',
+                                      style: TextStyle(
+                                          color: sendory,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        )
-                      : ListView.separated(
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                                onTap: () {
-                                  Songs song = searchsongs[index];
-                                  int songidx = 0;
-                                  for (int i = 0; i < listall.length; i++) {
-                                    if (song.id == listall[i].id) {
-                                      songidx = i;
-                                    }
-                                  }
-                                  playAudio(listall, songidx);
-                                },
-                                title: Text(
-                                  searchsongs[index].songname!,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                subtitle: Text(
-                                  searchsongs[index].artist!,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                leading: CircleAvatar(
-                                    backgroundColor: sendory,
-                                    child: QueryArtworkWidget(
-                                      id: searchsongs[index].id!,
-                                      type: ArtworkType.AUDIO,
-                                      nullArtworkWidget: Image.asset(
-                                          'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
-                                    )),
-                                trailing: Popupmenu(
-                                    favicon: Icons.favorite_border,
-                                    height: height,
-                                    idx: index,
-                                    songs: searchsongs));
-                          },
-                          separatorBuilder: (context, index) {
-                            return Divider(
-                              thickness: 1,
-                              color: sendory,
-                              endIndent: 20,
-                              indent: 20,
-                              height: 0,
-                            );
-                          },
-                          itemCount: searchsongs.length),
+                            )
+                          : ListView.separated(
+                              itemBuilder: (context, index) {
+                                // Songs song = state.searchedsongs[index];
+                                return ListTile(
+                                    onTap: () {
+                                      Songs song = state.searchedsongs[index];
+                                      int songidx = 0;
+                                      for (int i = 0; i < listall.length; i++) {
+                                        if (song.id == listall[i].id) {
+                                          songidx = i;
+                                        }
+                                      }
+                                      playAudio(listall, songidx);
+                                    },
+                                    title: Text(
+                                      state.searchedsongs[index].songname!,
+                                      overflow: TextOverflow.ellipsis,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    subtitle: Text(
+                                      state.searchedsongs[index].artist!,
+                                      overflow: TextOverflow.ellipsis,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    leading: CircleAvatar(
+                                        backgroundColor: sendory,
+                                        child: QueryArtworkWidget(
+                                          id: state.searchedsongs[index].id!,
+                                          type: ArtworkType.AUDIO,
+                                          nullArtworkWidget: Image.asset(
+                                              'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
+                                        )),
+                                    trailing: Popupmenu(
+                                        favicon: Icons.favorite_border,
+                                        height: height,
+                                        idx: index,
+                                        songs: searchsongs));
+                              },
+                              separatorBuilder: (context, index) {
+                                return Divider(
+                                  thickness: 1,
+                                  color: sendory,
+                                  endIndent: 20,
+                                  indent: 20,
+                                  height: 0,
+                                );
+                              },
+                              itemCount: searchsongs.length);
+                    },
+                  ),
                 ),
               )
             ],
@@ -209,19 +215,14 @@ class _SearchScreeenState extends State<SearchScreeen> {
     );
   }
 
-  search(String value) {
-    setState(() {
-      searchsongs = dbsongs
-          .where((element) => element.songname!
-              .toLowerCase()
-              .contains(value.toLowerCase().trim()))
-          .toList();
-      allSongs.clear();
-      for (Songs elements in searchsongs) {
-        allsongsin.add(Audio.file(elements.songurl.toString(),
-            metas:
-                Metas(title: elements.songname, id: elements.id.toString())));
-      }
-    });
+  search(String value, BuildContext context) {
+    searchsongs = dbsongs
+        .where((element) => element.songname!
+            .toLowerCase()
+            .contains(value.toLowerCase().trim()))
+        .toList();
+    // allSongs.clear();
+
+    BlocProvider.of<SearchBloc>(context).add(SearchingSongEvent(searchsongs));
   }
 }

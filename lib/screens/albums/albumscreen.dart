@@ -1,44 +1,29 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:music_player/bloc/albums/albums_bloc.dart';
 import 'package:music_player/materials/material.dart';
 import 'package:music_player/screens/albums/listalbum.dart';
 import 'package:music_player/screens/miniplayer/miniplayer.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class AlbumScreen extends StatefulWidget {
-  const AlbumScreen({super.key});
+class AlbumScreen extends StatelessWidget {
+  AlbumScreen({super.key});
 
-  @override
-  State<AlbumScreen> createState() => _AlbumScreenState();
-}
-
-class _AlbumScreenState extends State<AlbumScreen> {
   final OnAudioQuery _audioQuery = OnAudioQuery();
-  List<AlbumModel> albums = [];
-  @override
-  void initState() {
-    fectchalbum();
-    log(albums.length.toString());
-    setState(() {});
-    super.initState();
-  }
-
-  fectchalbum() async {
-    albumListNotifier.value = await _audioQuery.queryAlbums();
-  }
-
-  ValueNotifier<List<AlbumModel>> albumListNotifier =
-      ValueNotifier<List<AlbumModel>>([]);
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      List<AlbumModel> albums = await _audioQuery.queryAlbums();
+      // ignore: use_build_context_synchronously
+      BlocProvider.of<AlbumsBloc>(context).add(FetchAlbumsEvent(albums));
+    });
     return Scaffold(
       backgroundColor: sendory,
       body: SafeArea(
@@ -114,10 +99,11 @@ class _AlbumScreenState extends State<AlbumScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 25),
-                    child: ValueListenableBuilder(
-                      valueListenable: albumListNotifier,
-                      builder: (context, value, child) {
-                        return ListAlbums(albums: value);
+                    child: BlocBuilder<AlbumsBloc, AlbumsState>(
+                      builder: (context, state) {
+                        return state.albumslist != null
+                            ? ListAlbums(albums: state.albumslist!)
+                            : Lottie.asset('assets/common-empty.json');
                       },
                     ),
                   ),

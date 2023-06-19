@@ -1,10 +1,14 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:genius_lyrics/genius_lyrics.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
+import 'package:music_player/bloc/currentplaying/playerscreen_bloc.dart';
+import 'package:music_player/bloc/popupmenu/popupmenu_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/db/models/favoritesmodel/favoritesmodel.dart';
@@ -13,7 +17,6 @@ import 'package:music_player/screens/miniplayer/miniplayer.dart';
 import 'package:music_player/screens/searchscreen/searchwidget.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../materials/material.dart';
-import '../favorites/favoriteslist.dart';
 import '../homescreen/homescreen.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'functions.dart';
@@ -37,14 +40,7 @@ class _PlayerScreenState extends State<PlayerScreen>
   void initState() {
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
-    setState(() {});
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller!.dispose();
-    super.dispose();
   }
 
   @override
@@ -52,9 +48,9 @@ class _PlayerScreenState extends State<PlayerScreen>
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     var loop = false;
-
     Duration duration = Duration.zero;
     Duration position = Duration.zero;
+
     return SafeArea(
         child: Scaffold(
       backgroundColor: sendory,
@@ -62,13 +58,12 @@ class _PlayerScreenState extends State<PlayerScreen>
         child: PlayerBuilder.current(
           player: player,
           builder: (context, playing) {
-            IconData favicon = Icons.favorite_border;
-            favsong
-                    .where((element) =>
-                        element.songname == player.getCurrentAudioTitle)
-                    .isEmpty
-                ? favicon = Icons.favorite_border
-                : favicon = Icons.favorite;
+            // favsong
+            //         .where((element) =>
+            //             element.songname == player.getCurrentAudioTitle)
+            //         .isEmpty
+            //     ? favicon = Icons.favorite_border
+            //     : favicon = Icons.favorite;
             find(player.getCurrentAudioTitle, context);
             return Stack(
               children: [
@@ -189,74 +184,106 @@ class _PlayerScreenState extends State<PlayerScreen>
                                 ),
                                 Positioned(
                                   right: 30,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.lyrics,
-                                      size: 40,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () async {
-                                      String title =
-                                          player.getCurrentAudioTitle;
-                                      String artist =
-                                          player.getCurrentAudioArtist;
-                                      ScaffoldMessenger.of(context)
-                                        ..removeCurrentSnackBar()
-                                        ..showSnackBar(SnackBar(
-                                          backgroundColor: sendory,
-                                          content: Row(
-                                            children: [
-                                              Text(
-                                                'generating Lyrics please wait',
-                                                style: GoogleFonts.play(
-                                                    color: primary,
-                                                    fontSize: 17),
+                                  child: BlocBuilder<PlayerscreenBloc,
+                                      PlayerscreenState>(
+                                    builder: (context, state) {
+                                      return state.isloading
+                                          ? SizedBox(
+                                              height: 50,
+                                              width: 50,
+                                              child: Lottie.asset(
+                                                  'assets/loadinganimation.json'),
+                                            )
+                                          : IconButton(
+                                              icon: const Icon(
+                                                Icons.lyrics,
+                                                size: 40,
+                                                color: Colors.white,
                                               ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Icon(
-                                                Icons.info,
-                                                color: primary,
-                                              )
-                                            ],
-                                          ),
-                                        ));
-                                      String? lyric;
-                                      setState(() {});
-                                      Song? song = (await genius.searchSong(
-                                          artist: title, title: artist));
-                                      if (song != null) {
-                                        lyric = song.lyrics;
-                                      }
-                                      if (lyric != null) {
-                                        // ignore: use_build_context_synchronously
-                                        showlirics(context, lyric);
-                                      } else {
-                                        // ignore: use_build_context_synchronously
-                                        ScaffoldMessenger.of(context)
-                                          ..removeCurrentSnackBar()
-                                          ..showSnackBar(SnackBar(
-                                            backgroundColor: sendory,
-                                            content: Row(
-                                              children: [
-                                                Text(
-                                                  'Lyrics Not Available',
-                                                  style: GoogleFonts.play(
-                                                      color: primary,
-                                                      fontSize: 17),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Icon(
-                                                  Icons.info,
-                                                  color: primary,
-                                                )
-                                              ],
-                                            ),
-                                          ));
-                                      }
+                                              onPressed: () async {
+                                                BlocProvider.of<
+                                                            PlayerscreenBloc>(
+                                                        context)
+                                                    .add(LoadingEvent(true));
+                                                String title =
+                                                    player.getCurrentAudioTitle;
+                                                String artist = player
+                                                    .getCurrentAudioArtist;
+                                                ScaffoldMessenger.of(context)
+                                                  ..removeCurrentSnackBar()
+                                                  ..showSnackBar(SnackBar(
+                                                    backgroundColor: sendory,
+                                                    content: Row(
+                                                      children: [
+                                                        Text(
+                                                          'generating Lyrics please wait',
+                                                          style:
+                                                              GoogleFonts.play(
+                                                                  color:
+                                                                      primary,
+                                                                  fontSize: 17),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Icon(
+                                                          Icons.info,
+                                                          color: primary,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ));
+                                                String? lyric;
+                                                Song? song =
+                                                    (await genius.searchSong(
+                                                        artist: title,
+                                                        title: artist));
+                                                if (song != null) {
+                                                  lyric = song.lyrics;
+                                                }
+                                                if (lyric != null) {
+                                                  // ignore: use_build_context_synchronously
+                                                  showlirics(context, lyric);
+                                                  // ignore: use_build_context_synchronously
+                                                  BlocProvider.of<
+                                                              PlayerscreenBloc>(
+                                                          context)
+                                                      .add(LoadingEvent(false));
+                                                } else {
+                                                  // ignore: use_build_context_synchronously
+                                                  ScaffoldMessenger.of(context)
+                                                    ..removeCurrentSnackBar()
+                                                    ..showSnackBar(SnackBar(
+                                                      backgroundColor: sendory,
+                                                      content: Row(
+                                                        children: [
+                                                          Text(
+                                                            'Lyrics Not Available',
+                                                            style: GoogleFonts
+                                                                .play(
+                                                                    color:
+                                                                        primary,
+                                                                    fontSize:
+                                                                        17),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Icon(
+                                                            Icons.info,
+                                                            color: primary,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ));
+                                                  // ignore: use_build_context_synchronously
+                                                  BlocProvider.of<
+                                                              PlayerscreenBloc>(
+                                                          context)
+                                                      .add(LoadingEvent(false));
+                                                }
+                                              },
+                                            );
                                     },
                                   ),
                                 ),
@@ -483,43 +510,52 @@ class _PlayerScreenState extends State<PlayerScreen>
                                       color: Colors.white,
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () {
+                                  BlocBuilder<PopupmenuBloc, PopupmenuState>(
+                                    builder: (context, state) {
                                       String title =
                                           player.getCurrentAudioTitle;
                                       Songs fav = findcurrent(title);
-                                      List<Favsongs> favlist =
-                                          favsongbox.values.toList();
-                                      favlist
-                                              .where((element) =>
-                                                  element.songname ==
-                                                  fav.songname)
-                                              .isEmpty
-                                          ? addfavs(
-                                              Favsongs(
-                                                songname: fav.songname,
-                                                artist: fav.artist,
-                                                duration: fav.duration,
-                                                songurl: fav.songurl,
-                                                id: fav.id,
-                                              ),
-                                              context)
-                                          : deletefavs(
-                                              Favsongs(
-                                                songname: fav.songname,
-                                                artist: fav.artist,
-                                                duration: fav.duration,
-                                                songurl: fav.songurl,
-                                                id: fav.id,
-                                              ),
-                                              context,
-                                              listall);
-                                      setState(() {});
+                                      return IconButton(
+                                        onPressed: () {
+                                          // List<Favsongs> favlist =
+                                          //     favsongbox.values.toList();
+                                          state.favoritesongs.values
+                                                  .where((element) =>
+                                                      element.songname ==
+                                                      fav.songname)
+                                                  .isEmpty
+                                              ? addfavs(
+                                                  Favsongs(
+                                                    songname: fav.songname,
+                                                    artist: fav.artist,
+                                                    duration: fav.duration,
+                                                    songurl: fav.songurl,
+                                                    id: fav.id,
+                                                  ),
+                                                  context)
+                                              : deletefavs(
+                                                  Favsongs(
+                                                    songname: fav.songname,
+                                                    artist: fav.artist,
+                                                    duration: fav.duration,
+                                                    songurl: fav.songurl,
+                                                    id: fav.id,
+                                                  ),
+                                                  context,
+                                                  listall);
+                                        },
+                                        icon: Icon(
+                                          state.favoritesongs.values
+                                                  .where((element) =>
+                                                      element.songname ==
+                                                      fav.songname)
+                                                  .isEmpty
+                                              ? Icons.favorite_border
+                                              : Icons.favorite,
+                                          color: Colors.white,
+                                        ),
+                                      );
                                     },
-                                    icon: Icon(
-                                      favicon,
-                                      color: Colors.white,
-                                    ),
                                   ),
                                 ],
                               ),
@@ -545,11 +581,19 @@ class _PlayerScreenState extends State<PlayerScreen>
       }
     }
   }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
+  }
 }
 
 addfavs(Favsongs favson, BuildContext context) async {
   await favsongbox.add(favson);
-  favoritelistener.value.add(favson);
+  // ignore: use_build_context_synchronously
+  BlocProvider.of<PopupmenuBloc>(context)
+      .add(AddtoFavEvent(favoritesongs: favsongbox));
   // ignore: use_build_context_synchronously
   ScaffoldMessenger.of(context)
     ..removeCurrentSnackBar()
@@ -577,7 +621,9 @@ deletefavs(Favsongs favson, BuildContext context, songlist) async {
   List<Favsongs> fav = favsongbox.values.toList();
   int idx = fav.indexWhere((element) => element.songname == favson.songname);
   await favsongbox.deleteAt(idx);
-
+  // ignore: use_build_context_synchronously
+  BlocProvider.of<PopupmenuBloc>(context)
+      .add(AddtoFavEvent(favoritesongs: favsongbox));
   // ignore: use_build_context_synchronously
   ScaffoldMessenger.of(context)
     ..removeCurrentSnackBar()

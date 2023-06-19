@@ -40,7 +40,7 @@ class AllSongsList extends StatelessWidget {
                                 onTap: () {
                                   currentlyplaying = songs;
                                   playAudio(allDbSongs, index);
-                                  updatempcount(mpsong, index);
+                                  updatempcount(mpsong, index, context);
                                 },
                                 title: Text(
                                   songs.songname!,

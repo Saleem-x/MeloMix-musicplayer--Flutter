@@ -11,7 +11,7 @@ class AlbumsBloc extends Bloc<AlbumsEvent, AlbumsState> {
       emit(AlbumsState(event.albumslist));
     });
     on<FetchAlbumSongEvent>((event, emit) {
-      emit(AlbumSongState(albumsongs: event.albumsongs));
+      emit(AlbumSongState(event.albumsongs));
     });
   }
 }

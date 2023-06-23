@@ -21,15 +21,11 @@ class SearchScreen extends StatelessWidget {
 
   List<Songs> dbsongs = listall;
 
-  List<Songs> searchsongs = [];
+  List<Songs> searchsongs = listall;
   final searchcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // searchsongs = List.from(dbsongs);
-      BlocProvider.of<SearchBloc>(context).add(SearchingSongEvent(listall));
-    });
     return Scaffold(
       backgroundColor: sendory,
       body: SafeArea(
@@ -42,10 +38,10 @@ class SearchScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      // searchsongs = dbsongs;
                       searchcontroller.clear();
+                      searchsongs = listall;
                       BlocProvider.of<SearchBloc>(context)
-                          .add(SearchingSongEvent(listall));
+                          .add(SearchingSongEvent(searchsongs));
                       Navigator.of(context).pop();
                     },
                     icon: Icon(
@@ -65,9 +61,10 @@ class SearchScreen extends StatelessWidget {
                     Text(
                       'Search Songs Here',
                       style: TextStyle(
-                          color: primary,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold),
+                        color: primary,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     )
                   ],
                 ),
@@ -101,9 +98,9 @@ class SearchScreen extends StatelessWidget {
                           suffixIcon: IconButton(
                             onPressed: () {
                               searchcontroller.clear();
-                              // searchsongs = dbsongs;
+                              searchsongs = listall;
                               BlocProvider.of<SearchBloc>(context)
-                                  .add(SearchingSongEvent(listall));
+                                  .add(SearchingSongEvent(searchsongs));
                             },
                             icon: Icon(
                               Icons.clear,

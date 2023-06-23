@@ -11,9 +11,11 @@ import '../../materials/material.dart';
 // ignore: must_be_immutable
 class AlbumSongs extends StatefulWidget {
   AlbumModel albums;
+  final List<SongModel> albumsongs;
   AlbumSongs({
     super.key,
     required this.albums,
+    required this.albumsongs,
   });
 
   @override
@@ -21,23 +23,16 @@ class AlbumSongs extends StatefulWidget {
 }
 
 class _AlbumSongsState extends State<AlbumSongs> {
-  final OnAudioQuery _audioQuery = OnAudioQuery();
-  List<SongModel> songsInAlbum = [];
   List<Audio> albumsongs = [];
-  ValueNotifier<List<SongModel>> songstolist =
-      ValueNotifier<List<SongModel>>([]);
-  fetchsongs() async {
-    List<SongModel> allSongs = await _audioQuery.querySongs();
-    songstolist.value =
-        allSongs.where((song) => song.albumId == widget.albums.id).toList();
-  }
-
-  @override
-  void initState() {
-    fetchsongs();
-
-    super.initState();
-  }
+  // final OnAudioQuery _audioQuery = OnAudioQuery();
+  // List<SongModel> songsInAlbum = [];
+  // ValueNotifier<List<SongModel>> songstolist =
+  //     ValueNotifier<List<SongModel>>([]);
+  // fetchsongs() async {
+  //   List<SongModel> allSongs = await _audioQuery.querySongs();
+  //   songstolist.value =
+  //       allSongs.where((song) => song.albumId == widget.albums.id).toList();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -118,78 +113,75 @@ class _AlbumSongsState extends State<AlbumSongs> {
                   ),
                   child: Padding(
                       padding: const EdgeInsets.only(top: 25),
-                      child: ValueListenableBuilder(
-                        valueListenable: songstolist,
-                        builder: (context, value, child) {
-                          return ListView.separated(
-                              itemBuilder: (context, index) {
-                                SongModel song = value[index];
-                                return ListTile(
-                                  onTap: () {
-                                    albumsongs.clear();
-                                    for (var item in value) {
-                                      albumsongs.add(Audio.file(song.uri!,
-                                          metas: Metas(
-                                            image: MetasImage.file(
-                                              QueryArtworkWidget(
-                                                id: item.id,
-                                                type: ArtworkType.AUDIO,
-                                                nullArtworkWidget: Image.asset(
-                                                    'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
-                                              ).toString(),
-                                            ),
-                                            title: item.title,
-                                            artist: item.artist,
-                                            id: item.id.toString(),
-                                          )));
-                                    }
-                                    player.open(Playlist(
-                                        audios: albumsongs, startIndex: index));
-                                  },
-                                  title: Text(
-                                    song.displayNameWOExt,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.play(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  subtitle: SingleChildScrollView(
-                                    child: Text(
-                                      song.artist!
-                                          .toUpperCase()
-                                          .toLowerCase()
-                                          .replaceAll('?', ''),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.play(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  leading: CircleAvatar(
-                                    backgroundColor: sendory,
-                                    child: ClipOval(
-                                      child: QueryArtworkWidget(
-                                        id: 0,
-                                        type: ArtworkType.AUDIO,
-                                        nullArtworkWidget: Image.asset(
-                                            'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
-                                      ),
-                                    ),
-                                  ),
-                                );
+                      child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            SongModel song = widget.albumsongs[index];
+                            return ListTile(
+                              onTap: () {
+                                albumsongs.clear();
+                                for (var item in widget.albumsongs) {
+                                  albumsongs.add(Audio.file(song.uri!,
+                                      metas: Metas(
+                                        image: MetasImage.file(
+                                          QueryArtworkWidget(
+                                            id: item.id,
+                                            type: ArtworkType.AUDIO,
+                                            nullArtworkWidget: Image.asset(
+                                                'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
+                                          ).toString(),
+                                        ),
+                                        title: item.title,
+                                        artist: item.artist,
+                                        id: item.id.toString(),
+                                      )));
+                                }
+                                player.open(
+                                    Playlist(
+                                        audios: albumsongs, startIndex: index),
+                                    loopMode: LoopMode.playlist);
                               },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  thickness: 1,
-                                  color: sendory,
-                                  endIndent: 20,
-                                  indent: 20,
-                                  height: 0,
-                                );
-                              },
-                              itemCount: songstolist.value.length);
-                        },
-                      )),
+                              title: Text(
+                                song.displayNameWOExt,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.play(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              subtitle: SingleChildScrollView(
+                                child: Text(
+                                  song.artist!
+                                      .toUpperCase()
+                                      .toLowerCase()
+                                      .replaceAll('?', ''),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.play(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              leading: CircleAvatar(
+                                backgroundColor: sendory,
+                                child: ClipOval(
+                                  child: QueryArtworkWidget(
+                                    id: 0,
+                                    type: ArtworkType.AUDIO,
+                                    nullArtworkWidget: Image.asset(
+                                        'assets/images/Retro_cassette_tape_vector-removebg-preview (2).png'),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              thickness: 1,
+                              color: sendory,
+                              endIndent: 20,
+                              indent: 20,
+                              height: 0,
+                            );
+                          },
+                          itemCount: widget.albumsongs.length)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(10),

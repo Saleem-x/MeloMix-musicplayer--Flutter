@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:music_player/bloc/theme/theme_bloc.dart';
 import 'package:music_player/screens/homescreen/homescreen.dart';
 import 'package:music_player/widgets/settingslist.dart';
 import '../materials/material.dart';
@@ -33,7 +35,6 @@ class _SettingsState extends State<Settings> {
               GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
-                  setState(() {});
                 },
                 child: Container(
                   height: 40,
@@ -136,20 +137,22 @@ class _SettingsState extends State<Settings> {
                               const SizedBox(
                                 width: 120,
                               ),
-                              Switch(
-                                value: dark,
-                                activeColor: primary,
-                                onChanged: (value) {
-                                  setState(() {
-                                    dark = value;
-                                    themeswitcher(!dark);
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                      builder: (context) {
-                                        return HomeScreen();
-                                      },
-                                    ), (route) => false);
-                                  });
+                              BlocBuilder<ThemeBloc, ThemeState>(
+                                builder: (context, state) {
+                                  return Switch(
+                                    value: state.isDark,
+                                    activeColor: primary,
+                                    onChanged: (value) {
+                                      dark = value;
+                                      themeswitcher(!dark, context);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                        builder: (context) {
+                                          return HomeScreen();
+                                        },
+                                      ), (route) => false);
+                                    },
+                                  );
                                 },
                               ),
                             ],

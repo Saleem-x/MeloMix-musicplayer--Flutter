@@ -8,7 +8,7 @@ class AlbumsState {
 
 class AlbumSongState extends AlbumsState {
   final List<SongModel> albumsongs;
-  AlbumSongState({required this.albumsongs}) : super(null);
+  AlbumSongState(this.albumsongs) : super([]);
 }
 
 class AlbumsInitial extends AlbumsState {

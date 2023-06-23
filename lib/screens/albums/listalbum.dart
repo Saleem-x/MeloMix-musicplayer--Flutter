@@ -15,7 +15,7 @@ class ListAlbums extends StatefulWidget {
 }
 
 class _ListAlbumsState extends State<ListAlbums> {
-  // final OnAudioQuery _audioQuery = OnAudioQuery();
+  final OnAudioQuery _audioQuery = OnAudioQuery();
 
   @override
   void initState() {
@@ -45,11 +45,15 @@ class _ListAlbumsState extends State<ListAlbums> {
                   crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    List<SongModel> albumsongs =
+                        await fetchalbumsongs(widget.albums[index].id);
+                    // ignore: use_build_context_synchronously
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return AlbumSongs(
                           albums: widget.albums[index],
+                          albumsongs: albumsongs,
                         );
                       },
                     ));
@@ -99,5 +103,12 @@ class _ListAlbumsState extends State<ListAlbums> {
               },
             ),
     );
+  }
+
+  Future<List<SongModel>> fetchalbumsongs(int albumsid) async {
+    List<SongModel> allSongs = await _audioQuery.querySongs();
+    List<SongModel> songstolist =
+        allSongs.where((song) => song.albumId == albumsid).toList();
+    return songstolist;
   }
 }

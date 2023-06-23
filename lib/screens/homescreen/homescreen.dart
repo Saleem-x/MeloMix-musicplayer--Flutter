@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             PageTransition(
-                                type: PageTransitionType.fade,
+                                type: PageTransitionType.leftToRight,
                                 child: const Settings()));
                       },
                       child: Container(

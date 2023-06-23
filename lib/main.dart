@@ -13,6 +13,7 @@ import 'package:music_player/bloc/popupmenu/popupmenu_bloc.dart';
 import 'package:music_player/bloc/recent/recentscreen_bloc.dart';
 import 'package:music_player/bloc/search/search_bloc.dart';
 import 'package:music_player/bloc/splashscreenbloc/splashscreen_bloc.dart';
+import 'package:music_player/bloc/theme/theme_bloc.dart';
 import 'package:music_player/db/functions/db_functions.dart';
 import 'package:music_player/db/models/db_model.dart';
 import 'package:music_player/db/models/favoritesmodel/favoritesmodel.dart';
@@ -95,6 +96,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<PlayerscreenBloc>(
           create: (context) => PlayerscreenBloc(),
+        ),
+        BlocProvider<ThemeBloc>(
+          create: (context) => ThemeBloc(),
         ),
       ],
       child: MaterialApp(
